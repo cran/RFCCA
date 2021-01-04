@@ -14,7 +14,7 @@ vignette("RFCCA")
 ```
 
 ## Installation
-You can install **RFCCA** from GitHub using the devtools package. Run the following code in `R` to install:
+This package is available on [CRAN](https://CRAN.R-project.org/package=RFCCA). Alternatively, you can install **RFCCA** from GitHub using the `devtools` package. Run the following code in `R` to install:
 
 ```R
 if (!require(devtools)) {

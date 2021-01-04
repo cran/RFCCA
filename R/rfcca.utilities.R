@@ -26,7 +26,6 @@ findforestbop <- function(obs, mem.train, mem.test = NULL, inbag, ntree, bop.typ
     out <- lapply(1:ntree, "findtreebop", mem.train = mem.inbag, mem.test = mem.obs, inbag = inbag)
   } else if (bop.type == "test") {
     mem.obs <- mem.test[obs, ]
-    inbag <- inbag + (inbag==0)*1
     out <- lapply(1:ntree, "findtreebop", mem.train = mem.train, mem.test = mem.obs, inbag = inbag)
   }
   return(out)

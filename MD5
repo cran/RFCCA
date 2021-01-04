@@ -1,5 +1,6 @@
-ccc33867eaa0b243a461cd4091986237 *DESCRIPTION
+397f37d6bff9ad735bf94945fe87173f *DESCRIPTION
 1abc17eb7795ce8991346e5e6944c02b *NAMESPACE
+74690498278484f195cb857a98c87138 *NEWS.md
 e233a889dfa284897457ca8992e9a2ef *R/data.R
 312f3d8f043b50f168957e62faad1d0b *R/data.utilities.R
 7b15e7e738fcb46297ff2c3f86fcef8a *R/distance.R
@@ -29,7 +30,7 @@ cc4a419c5a134165205d8d9d11ab561b *R/print.rfsrc.R
 3ebc08168dd9c3158d06e85d6f28b76d *R/quantreg.rfsrc.R
 1e59d712b868d96d0f500e22f7a52eb3 *R/rfcca-package.R
 22213211eb323748c80b9c2aa7a90573 *R/rfcca.R
-554fc6e4d297c78483a5e25ef22780d9 *R/rfcca.utilities.R
+487d368eece9381f9845724201540f7f *R/rfcca.utilities.R
 3576f278922e499e4994ead90b895d8c *R/rfsrc.R
 019b3cd8fc9829656001801487e8f939 *R/rfsrc.cart.R
 021d88b01b0e18c5fef775828a55a3e3 *R/rfsrc.fast.R
@@ -44,15 +45,15 @@ d38060dd6f080232c5386b1b7bdf5f50 *R/subsample.rfsrc.R
 cfc74f896d4f244a72ec62c21d28e2d4 *R/vimp.rfcca.R
 ba8c1700a9e99b402b8b9dd53f8d2305 *R/vimp.rfsrc.R
 42dedba184b3fa5952ea9fea781af5ad *R/zzz.R
-95235d9f941298e0a999aa76e8e20a7d *README.md
+cc65481b781c2d8ff537bac054d7e27c *README.md
 6614ccbe4286fdf561a6c65265394b00 *build/vignette.rds
 e66900a0e679a19b0c32de56a9a33366 *cleanup
-fee089a5aa7f9494e4e12970e9c55d40 *configure
-d90f1d1bd035f1070d7fe9c784d52f10 *configure.ac
+32e816a252d9c85df80419ea65c75860 *configure
+d99ad12619a07c187d44a3d18ae9cee9 *configure.ac
 fff8ce1ead6446c561f6fdaa615ee431 *data/data.rda
 f5c03f17d66a4adf9f159fa702ed4ac3 *inst/doc/RFCCA.R
 a027139a6274834e9d14e4880a6309e2 *inst/doc/RFCCA.Rmd
-a7576504616d4a190bd77a8e45e27944 *inst/doc/RFCCA.html
+eb3d16747ea0b742314abd11198c7a49 *inst/doc/RFCCA.html
 cb18f0a405c69a81262b329662414a7b *inst/include/cblas.h
 37d3486a81ec36fc9a9e8bf7044a212b *inst/include/cblas/cblas_dgemm.h
 a3a81b2d6cd590260bee151df80d1b5a *inst/include/cblas/cblas_globals.h
