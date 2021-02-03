@@ -29,11 +29,10 @@ generic.vimp.rfcca <- function(object,
                   nodesize = object$nodesize,
                   nodedepth = object$nodedepth,
                   nsplit = object$nsplit,
-                  importance = TRUE)
+                  importance = TRUE,
+                  samptype = object$samptype,
+                  sampsize = object$sampsize)
   vimp.out <- rfvimp$importance
-  vimp.out <- vimp.out/max(vimp.out)
-  ## normalize the vimp with the maximum
-  # vimp.out <- abs(vimp.out)/max(abs(vimp.out))
   names(vimp.out) <- zvar.names
   ## make the output object
   rfccaOutput <- list(

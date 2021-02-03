@@ -79,6 +79,7 @@ generic.predict.rfcca <- function(object,
   } else { ## there is a test data
     outcome <- "test"
     ## Filter the test data based on the formula
+    if (!is.data.frame(newdata)) {stop("newdata must be a data frame.")}
     newdata <- newdata[, is.element(names(newdata),zvar.names), drop = FALSE]
     ## get membership info for training observations
     membership.train <- object$rfsrc.grow$membership

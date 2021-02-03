@@ -4,13 +4,12 @@
 #'   subject-related covariates (Z). Returns an estimated \emph{p}-value.
 #'
 #' @param X The first multivariate data set which has \eqn{n} observations and
-#'   \eqn{px} variables. A matrix or data.frame of numeric values.
+#'   \eqn{px} variables. A data.frame of numeric values.
 #' @param Y The second multivariate data set which has \eqn{n} observations and
-#'   \eqn{py} variables. A matrix or data.frame of numeric values.
+#'   \eqn{py} variables. A data.frame of numeric values.
 #' @param Z The set of subject-related covariates which has \eqn{n} observations
-#'   and \eqn{pz} variables. Used in random forest growing. Either a matrix of
-#'   numerical values, or a data.frame with numeric values, characters and
-#'   factors.
+#'   and \eqn{pz} variables. Used in random forest growing. A data.frame with
+#'   numeric values and factors.
 #' @param ntree Number of trees.
 #' @param mtry Number of z-variables randomly selected as candidates for
 #'   splitting a node. The default is \eqn{pz/3} where \eqn{pz} is the number of
@@ -92,14 +91,20 @@ global.significance <- function(X,
                                 nodedepth = NULL,
                                 nsplit = 10)
 {
-  ## all sets of variables should be non-empty
-  if (is.null(X)) {stop("X is empty")}
-  if (is.null(Y)) {stop("Y is empty")}
-  if (is.null(Z)) {stop("Z (subject-related covariates) is empty")}
-  ## get the data
-  xvar <- as.data.frame(X)
-  yvar <- as.data.frame(Y)
-  zvar <- as.data.frame(Z)
+  ## initial checks
+  if (is.null(X)) {stop("X is missing")}
+  if (is.null(Y)) {stop("Y is missing")}
+  if (is.null(Z)) {stop("Z is missing")}
+  if (!is.data.frame(X)) {stop("'X' must be a data frame.")}
+  if (!is.data.frame(Y)) {stop("'Y' must be a data frame.")}
+  if (!is.data.frame(Z)) {stop("'Z' must be a data frame.")}
+  ## get data and variable names
+  xvar <- X
+  yvar <- Y
+  zvar <- Z
+  xvar.names <- names(xvar)
+  yvar.names <- names(yvar)
+  zvar.names <- names(zvar)
   ## check for missing data
   na.xvar <- NULL
   na.yvar <- NULL
@@ -123,20 +128,11 @@ global.significance <- function(X,
     yvar <- yvar[-na.all, ]
     zvar <- zvar[-na.all, ]
   }
-  ## check variable names, if empty rename
+  ## get dimension info
   n <- as.numeric(dim(zvar)[1])
   px <- as.numeric(dim(xvar)[2])
   py <- as.numeric(dim(yvar)[2])
   pz <- as.numeric(dim(zvar)[2])
-  xvar.names <- names(X)
-  yvar.names <- names(Y)
-  zvar.names <- names(Z)
-  if (is.null(zvar.names)) {zvar.names <- paste0("z", 1:pz)}
-  if (is.null(xvar.names)) {xvar.names <- paste0("x", 1:px)}
-  if (is.null(yvar.names)) {yvar.names <- paste0("y", 1:py)}
-  names(xvar) <- xvar.names
-  names(yvar) <- yvar.names
-  names(zvar) <- zvar.names
   ## coherence checks on option parameters
   ntree <- round(ntree)
   if (ntree < 1) stop("Invalid choice of 'ntree'.  Cannot be less than 1.")

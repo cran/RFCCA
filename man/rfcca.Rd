@@ -16,6 +16,9 @@ rfcca(
   importance = FALSE,
   finalcca = c("cca", "scca", "rcca"),
   bootstrap = TRUE,
+  samptype = c("swor", "swr"),
+  sampsize = if (samptype == "swor") function(x) {     x * 0.632 } else function(x) {  
+      x },
   forest = TRUE,
   membership = FALSE,
   bop = TRUE,
@@ -24,15 +27,14 @@ rfcca(
 }
 \arguments{
 \item{X}{The first multivariate data set which has \eqn{n} observations and
-\eqn{px} variables. A matrix or data.frame of numeric values.}
+\eqn{px} variables. A data.frame of numeric values.}
 
 \item{Y}{The second multivariate data set which has \eqn{n} observations and
-\eqn{py} variables. A matrix or data.frame of numeric values.}
+\eqn{py} variables. A data.frame of numeric values.}
 
 \item{Z}{The set of subject-related covariates which has \eqn{n} observations
-and \eqn{pz} variables. Used in random forest growing. Either a matrix of
-numerical values, or a data.frame with numeric values, characters and
-factors.}
+and \eqn{pz} variables. Used in random forest growing. A data.frame with
+numeric values and factors.}
 
 \item{ntree}{Number of trees.}
 
@@ -63,6 +65,15 @@ for details. The default is \code{cca}.}
 If \code{FALSE} is chosen, the data is not bootstrapped. It is not possible
 to return OOB predictions and variable importance measures if \code{FALSE}
 is chosen.}
+
+\item{samptype}{Type of bootstrap. Choices are \code{swor} (sampling without
+replacement/sub-sampling) and \code{swr} (sampling with replacement/
+bootstrapping). The default action here (as in \code{randomForestSRC}) is
+sampling without replacement.}
+
+\item{sampsize}{Size of sample to draw. For sampling without replacement, by
+default it is .632 times the sample size. For sampling with replacement, it
+is the sample size.}
 
 \item{forest}{Should the forest object be returned? It is used for prediction
 on new data. The default is \code{TRUE}.}

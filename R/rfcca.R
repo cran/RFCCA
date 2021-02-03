@@ -4,13 +4,12 @@
 #'   on the subject-related covariates.
 #'
 #' @param X The first multivariate data set which has \eqn{n} observations and
-#'   \eqn{px} variables. A matrix or data.frame of numeric values.
+#'   \eqn{px} variables. A data.frame of numeric values.
 #' @param Y The second multivariate data set which has \eqn{n} observations and
-#'   \eqn{py} variables. A matrix or data.frame of numeric values.
+#'   \eqn{py} variables. A data.frame of numeric values.
 #' @param Z The set of subject-related covariates which has \eqn{n} observations
-#'   and \eqn{pz} variables. Used in random forest growing. Either a matrix of
-#'   numerical values, or a data.frame with numeric values, characters and
-#'   factors.
+#'   and \eqn{pz} variables. Used in random forest growing. A data.frame with
+#'   numeric values and factors.
 #' @param ntree Number of trees.
 #' @param mtry Number of z-variables randomly selected as candidates for
 #'   splitting a node. The default is \eqn{pz/3} where \eqn{pz} is the number of
@@ -33,6 +32,13 @@
 #'   If \code{FALSE} is chosen, the data is not bootstrapped. It is not possible
 #'   to return OOB predictions and variable importance measures if \code{FALSE}
 #'   is chosen.
+#' @param samptype Type of bootstrap. Choices are \code{swor} (sampling without
+#' replacement/sub-sampling) and \code{swr} (sampling with replacement/
+#' bootstrapping). The default action here (as in \code{randomForestSRC}) is
+#' sampling without replacement.
+#' @param sampsize Size of sample to draw. For sampling without replacement, by
+#' default it is .632 times the sample size. For sampling with replacement, it
+#' is the sample size.
 #' @param forest Should the forest object be returned? It is used for prediction
 #'   on new data. The default is \code{TRUE}.
 #' @param membership Should terminal node membership and inbag information be
@@ -154,6 +160,8 @@ rfcca <- function(X,
                   importance = FALSE,
                   finalcca = c("cca", "scca", "rcca"),
                   bootstrap = TRUE,
+                  samptype = c("swor", "swr"),
+                  sampsize = if (samptype == "swor") function(x){x * .632} else function(x){x},
                   forest = TRUE,
                   membership = FALSE,
                   bop = TRUE,
@@ -176,19 +184,26 @@ rfcca <- function(X,
   forest <- match.arg(as.character(forest), c(TRUE, FALSE))
   importance <- match.arg(as.character(importance), c(FALSE, TRUE))
   membership <- match.arg(as.character(membership), c(FALSE, TRUE))
-  ## all sets of variables should be non-empty
-  if (is.null(X)) {stop("X is empty")}
-  if (is.null(Y)) {stop("Y is empty")}
-  if (is.null(Z)) {stop("Z (subject-related covariates) is empty")}
+  samptype <- match.arg(samptype, c("swor", "swr"))
+  ## initial checks
+  if (is.null(X)) {stop("X is missing")}
+  if (is.null(Y)) {stop("Y is missing")}
+  if (is.null(Z)) {stop("Z is missing")}
+  if (!is.data.frame(X)) {stop("'X' must be a data frame.")}
+  if (!is.data.frame(Y)) {stop("'Y' must be a data frame.")}
+  if (!is.data.frame(Z)) {stop("'Z' must be a data frame.")}
+  ## get data and variable names
+  xvar <- X
+  yvar <- Y
+  zvar <- Z
+  xvar.names <- names(xvar)
+  yvar.names <- names(yvar)
+  zvar.names <- names(zvar)
   ## if regularized cca is the final estimation method
   ## check for lambda1 and lambda2
   if ((finalcca == "rcca") & (is.null(lambda1) || is.null(lambda2))) {
     stop("when rcca is the final estimation method, 'lambda1' and 'lambda2' should be entered")
   }
-  ## get the data
-  xvar <- as.data.frame(X)
-  yvar <- as.data.frame(Y)
-  zvar <- as.data.frame(Z)
   ## check for missing data
   na.xvar <- NULL
   na.yvar <- NULL
@@ -212,20 +227,11 @@ rfcca <- function(X,
     yvar <- yvar[-na.all, ]
     zvar <- zvar[-na.all, ]
   }
-  ## check variable names, if empty rename
+  ## get dimension info
   n <- as.numeric(dim(zvar)[1])
   px <- as.numeric(dim(xvar)[2])
   py <- as.numeric(dim(yvar)[2])
   pz <- as.numeric(dim(zvar)[2])
-  xvar.names <- names(X)
-  yvar.names <- names(Y)
-  zvar.names <- names(Z)
-  if (is.null(zvar.names)) {zvar.names <- paste0("z", 1:pz)}
-  if (is.null(xvar.names)) {xvar.names <- paste0("x", 1:px)}
-  if (is.null(yvar.names)) {yvar.names <- paste0("y", 1:py)}
-  names(xvar) <- xvar.names
-  names(yvar) <- yvar.names
-  names(zvar) <- zvar.names
   ## coherence checks on option parameters
   ntree <- round(ntree)
   if (ntree < 1) stop("Invalid choice of 'ntree'.  Cannot be less than 1.")
@@ -267,6 +273,8 @@ rfcca <- function(X,
               importance = FALSE,
               forest = TRUE,
               bootstrap = (if (bootstrap) {"by.root"} else {"none"}),
+              samptype = samptype,
+              sampsize = sampsize,
               var.used = var.used,
               split.depth = split.depth,
               do.trace = do.trace,
@@ -312,9 +320,10 @@ rfcca <- function(X,
                       nodesize = nodesize,
                       nodedepth = nodedepth,
                       nsplit = nsplit,
-                      importance = TRUE)
+                      importance = TRUE,
+                      samptype = samptype,
+                      sampsize = sampsize)
       vimp.out <- rfvimp$importance
-      # vimp.out <- abs(vimp.out)/max(abs(vimp.out))
       names(vimp.out) <- zvar.names
     }
   } else {
@@ -383,6 +392,8 @@ rfcca <- function(X,
     zvar.names = zvar.names,
     leaf.count = rf$leaf.count,
     bootstrap = bootstrap,
+    samptype = samptype,
+    sampsize = sampsize,
     forest = forest.out,
     membership = (if (membership) {mem} else {NULL}),
     importance = vimp.out,

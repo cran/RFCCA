@@ -5,10 +5,9 @@
 #'
 #' @param object An object of class \code{(rfcca,grow)} created by the function
 #'   \code{rfcca}.
-#' @param newdata Test data of the set of subject-related covariates (Z). Either
-#'   a matrix of numerical values, or a data.frame with numeric values,
-#'   characters and factors. If missing, the out-of-bag predictions in
-#'   \code{object} is returned.
+#' @param newdata Test data of the set of subject-related covariates (Z). A
+#'  data.frame with numeric values and factors. If missing, the out-of-bag
+#'  predictions in \code{object} is returned.
 #' @param membership Should terminal node membership information be returned?
 #' @param finalcca Which CCA should be used for final canonical correlation
 #'   estimation? Choices are \code{cca}, \code{scca} and \code{rcca}, see

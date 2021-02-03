@@ -63,7 +63,9 @@ plot.vimp.rfcca <- function(x,
   }
   ## sort if sort=TRUE
   if (sort) {
-    vimp.out <- rev(sort(vimp.out, decreasing = TRUE))[1:ndisp]
+    vimp.out <- rev(sort(vimp.out, decreasing = TRUE)[1:ndisp])
+  } else {
+    vimp.out <- rev(vimp.out[1:ndisp])
   }
   ## save par settings
   old.par <- par(no.readonly = TRUE)

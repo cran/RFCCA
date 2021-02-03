@@ -18,15 +18,14 @@ global.significance(
 }
 \arguments{
 \item{X}{The first multivariate data set which has \eqn{n} observations and
-\eqn{px} variables. A matrix or data.frame of numeric values.}
+\eqn{px} variables. A data.frame of numeric values.}
 
 \item{Y}{The second multivariate data set which has \eqn{n} observations and
-\eqn{py} variables. A matrix or data.frame of numeric values.}
+\eqn{py} variables. A data.frame of numeric values.}
 
 \item{Z}{The set of subject-related covariates which has \eqn{n} observations
-and \eqn{pz} variables. Used in random forest growing. Either a matrix of
-numerical values, or a data.frame with numeric values, characters and
-factors.}
+and \eqn{pz} variables. Used in random forest growing. A data.frame with
+numeric values and factors.}
 
 \item{ntree}{Number of trees.}
 
