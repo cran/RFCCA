@@ -1,3 +1,6 @@
+## RFCCA 1.0.6
+Fixed the omp.h declaration before R headers per Prof. Ripley, in anticipation of clang 13.0.0.
+
 ## RFCCA 1.0.4
 * Added 'samptype' and 'sampsize' arguments to rfcca() function.
 * Fixed the displaying with 'ndisp' argument in plot.vimp.rfcca() function.

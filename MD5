@@ -1,6 +1,6 @@
-2e4c97eb5b144ca3d32baade29bafd0a *DESCRIPTION
+82dad0eec62d06370b19670aa96a7965 *DESCRIPTION
 1abc17eb7795ce8991346e5e6944c02b *NAMESPACE
-48e10e6e0d1d09dfe78184bea97a1123 *NEWS.md
+bf83ccfd60d40961454b0c7846601baf *NEWS.md
 e233a889dfa284897457ca8992e9a2ef *R/data.R
 312f3d8f043b50f168957e62faad1d0b *R/data.utilities.R
 7b15e7e738fcb46297ff2c3f86fcef8a *R/distance.R
@@ -45,15 +45,15 @@ d38060dd6f080232c5386b1b7bdf5f50 *R/subsample.rfsrc.R
 cfc74f896d4f244a72ec62c21d28e2d4 *R/vimp.rfcca.R
 ba8c1700a9e99b402b8b9dd53f8d2305 *R/vimp.rfsrc.R
 42dedba184b3fa5952ea9fea781af5ad *R/zzz.R
-cc65481b781c2d8ff537bac054d7e27c *README.md
+1f41459b332b057cf123eabe1df7c643 *README.md
 6614ccbe4286fdf561a6c65265394b00 *build/vignette.rds
 e66900a0e679a19b0c32de56a9a33366 *cleanup
-32af4e70b997da21f4bc63873aeaf70a *configure
-7c4320570f6a8fb3ae59c09b55ba2fb5 *configure.ac
+315e7bb0cf543560a141a06fbcdea80b *configure
+4bc8b61b2649903e7174153c5636745a *configure.ac
 fff8ce1ead6446c561f6fdaa615ee431 *data/data.rda
 f5c03f17d66a4adf9f159fa702ed4ac3 *inst/doc/RFCCA.R
 a027139a6274834e9d14e4880a6309e2 *inst/doc/RFCCA.Rmd
-1cfaff863bf4a2fe8e31ee1e6a5e622d *inst/doc/RFCCA.html
+a13c181c149f8e6dff3532bb3d59abc4 *inst/doc/RFCCA.html
 cb18f0a405c69a81262b329662414a7b *inst/include/cblas.h
 37d3486a81ec36fc9a9e8bf7044a212b *inst/include/cblas/cblas_dgemm.h
 a3a81b2d6cd590260bee151df80d1b5a *inst/include/cblas/cblas_globals.h
@@ -89,7 +89,7 @@ b23888d45d2c8eaffc7892bb5a3498c2 *src/Makevars.in
 36434a861e3c1aafc705fa2de6effb98 *src/Makevars.win
 cc0ee6979778cc4f5823e839f5dfd51e *src/R_init_randomForestSRC.c
 402a2bd78176f03c2dd0760796b351e4 *src/randomForestSRC.c
-2b65cb164b605558bb0bd6f5de4d8b99 *src/randomForestSRC.h
+afa19b05c374f55d01d1f46cedb99eb1 *src/randomForestSRC.h
 bcfdfed793db3fc4faf4d9e27e2f24a3 *src/splitCustom.c
 1cf85e46ff545d6e756d432d95c3b7f0 *src/splitCustom.h
 e14966e10c27fde0b2d16855e70c7aa4 *tests/testthat.R
