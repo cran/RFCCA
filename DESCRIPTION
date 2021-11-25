@@ -1,6 +1,6 @@
 Package: RFCCA
 Title: Random Forest with Canonical Correlation Analysis
-Version: 1.0.6
+Version: 1.0.7
 Authors@R: 
     c(person(given = "Cansu", family = "Alakus", role = c("aut", "cre"), email = "cansu.alakus@hec.ca"),
       person(given = "Denis", family = "Larocque", role = c("aut"), email = "denis.larocque@hec.ca"),
@@ -12,7 +12,7 @@ Description: Random Forest with Canonical Correlation Analysis (RFCCA) is a
   sets of variables depending on the subject-related covariates. The trees are 
   built with a splitting rule specifically designed to partition the data to 
   maximize the canonical correlation heterogeneity between child nodes. The 
-  method is described in Alakus et al. (2020) <arXiv:2011.11555>. RFCCA uses 
+  method is described in Alakus et al. (2021) <doi:10.1093/bioinformatics/btab158>. RFCCA uses 
   'randomForestSRC' package (Ishwaran and Kogalur, 2020) by freezing at the 
   version 2.9.3. The custom splitting rule feature is utilised to apply the 
   proposed splitting rule.
@@ -20,14 +20,14 @@ Depends: R (>= 3.5.0)
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Imports: CCA, PMA
 Suggests: knitr, rmarkdown, testthat
 VignetteBuilder: knitr
 URL: https://github.com/calakus/RFCCA
 BugReports: https://github.com/calakus/RFCCA/issues
 NeedsCompilation: yes
-Packaged: 2021-09-14 14:34:28 UTC; cansualakus
+Packaged: 2021-11-25 01:34:28 UTC; cansualakus
 Author: Cansu Alakus [aut, cre],
   Denis Larocque [aut],
   Aurelie Labbe [aut],
@@ -35,4 +35,4 @@ Author: Cansu Alakus [aut, cre],
   Udaya B. Kogalur [ctb] (Author of included randomForestSRC codes)
 Maintainer: Cansu Alakus <cansu.alakus@hec.ca>
 Repository: CRAN
-Date/Publication: 2021-09-14 14:50:01 UTC
+Date/Publication: 2021-11-25 05:30:06 UTC

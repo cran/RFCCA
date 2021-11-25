@@ -4,8 +4,8 @@ ccaest <- function(bop, xtrain, ytrain) {
   cor <- cca$cor[1]
   coefx <- cca$xcoef[,1]
   coefy <- cca$ycoef[,1]
-  px <- as.numeric(dim(as.matrix(xtrain[bop, ]))[2])
-  py <- as.numeric(dim(as.matrix(ytrain[bop, ]))[2])
+  px <- as.numeric(ncol(as.matrix(xtrain[bop, ])))
+  py <- as.numeric(ncol(as.matrix(ytrain[bop, ])))
   coef <- rep(NA,(px+py))
   px1 <- length(coefx)
   py1 <- length(coefy)
@@ -117,8 +117,8 @@ rccaest <- function(bop, xtrain, ytrain, lambda1, lambda2) {
   cor <- rcca$corr
   coefx <- rcca$xcoef
   coefy <- rcca$ycoef
-  px <- as.numeric(dim(xtrain[bop,])[2])
-  py <- as.numeric(dim(ytrain[bop,])[2])
+  px <- as.numeric(ncol(xtrain[bop,]))
+  py <- as.numeric(ncol(ytrain[bop,]))
   coef <- rep(NA,(px+py))
   px1 <- length(coefx)
   py1 <- length(coefy)
@@ -135,8 +135,8 @@ sccaest <- function(bop, xtrain, ytrain) {
   cor <- scca$cors
   coefx <- scca$u[,1]
   coefy <- scca$v[,1]
-  px <- as.numeric(dim(xtrain[bop, ])[2])
-  py <- as.numeric(dim(ytrain[bop, ])[2])
+  px <- as.numeric(ncol(xtrain[bop, ]))
+  py <- as.numeric(ncol(ytrain[bop, ]))
   coef <- rep(NA,(px+py))
   px1 <- length(coefx)
   py1 <- length(coefy)

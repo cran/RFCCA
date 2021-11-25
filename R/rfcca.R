@@ -45,6 +45,10 @@
 #'   returned?
 #' @param bop Should the Bag of Observations for Prediction (BOP) for training
 #'   observations be returned? The default is \code{TRUE}.
+#' @param Xcenter Should the columns of X be centered? The default is
+#'   \code{TRUE}.
+#' @param Ycenter Should the columns of Y be centered? The default is
+#'   \code{TRUE}.
 #' @param ... Optional arguments to be passed to other methods.
 #'
 #' @section Details: \describe{
@@ -165,6 +169,8 @@ rfcca <- function(X,
                   forest = TRUE,
                   membership = FALSE,
                   bop = TRUE,
+                  Xcenter = TRUE,
+                  Ycenter = TRUE,
                   ...)
 {
   ## get any hidden options to be used in rfsrc
@@ -185,6 +191,8 @@ rfcca <- function(X,
   importance <- match.arg(as.character(importance), c(FALSE, TRUE))
   membership <- match.arg(as.character(membership), c(FALSE, TRUE))
   samptype <- match.arg(samptype, c("swor", "swr"))
+  Xcenter <- match.arg(as.character(Xcenter), c(TRUE, FALSE))
+  Ycenter <- match.arg(as.character(Ycenter), c(TRUE, FALSE))
   ## initial checks
   if (is.null(X)) {stop("X is missing")}
   if (is.null(Y)) {stop("Y is missing")}
@@ -227,11 +235,14 @@ rfcca <- function(X,
     yvar <- yvar[-na.all, ]
     zvar <- zvar[-na.all, ]
   }
+  ## mean centering
+  if (Xcenter) {xvar <- as.data.frame(scale(xvar, center = TRUE, scale = FALSE))}
+  if (Ycenter) {yvar <- as.data.frame(scale(yvar, center = TRUE, scale = FALSE))}
   ## get dimension info
-  n <- as.numeric(dim(zvar)[1])
-  px <- as.numeric(dim(xvar)[2])
-  py <- as.numeric(dim(yvar)[2])
-  pz <- as.numeric(dim(zvar)[2])
+  n <- as.numeric(nrow(zvar))
+  px <- as.numeric(ncol(xvar))
+  py <- as.numeric(ncol(yvar))
+  pz <- as.numeric(ncol(zvar))
   ## coherence checks on option parameters
   ntree <- round(ntree)
   if (ntree < 1) stop("Invalid choice of 'ntree'.  Cannot be less than 1.")
@@ -337,7 +348,7 @@ rfcca <- function(X,
     forest.out <- list(forest = TRUE,
                        nativeArray = rf$forest$nativeArray,
                        nativeFactorArray = rf$forest$nativeFactorArray,
-                       totalNodeCount = dim(rf$forest$nativeArray)[1],
+                       totalNodeCount = nrow(rf$forest$nativeArray),
                        nodesize = nodesize,
                        nodedepth = nodedepth,
                        ntree = ntree,

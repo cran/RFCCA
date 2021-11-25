@@ -1,3 +1,8 @@
+## RFCCA 1.0.7
+* Added CITATION file.
+* Updated paper reference information in package description and vignette.
+* Added X and Y mean-centering options as arguments to rfcca() and globalsignificance().
+
 ## RFCCA 1.0.6
 Fixed the omp.h declaration before R headers per Prof. Ripley, in anticipation of clang 13.0.0.
 

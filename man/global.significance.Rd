@@ -13,7 +13,9 @@ global.significance(
   nperm = 500,
   nodesize = NULL,
   nodedepth = NULL,
-  nsplit = 10
+  nsplit = 10,
+  Xcenter = TRUE,
+  Ycenter = TRUE
 )
 }
 \arguments{
@@ -45,6 +47,12 @@ default, this parameter is ignored.}
 \item{nsplit}{Non-negative integer value for the number of random splits to
 consider for each candidate splitting variable. When zero or \code{NULL},
 all possible splits considered.}
+
+\item{Xcenter}{Should the columns of X be centered? The default is
+\code{TRUE}.}
+
+\item{Ycenter}{Should the columns of Y be centered? The default is
+\code{TRUE}.}
 }
 \value{
 An object of class \code{(rfcca,globalsignificance)} which is a list

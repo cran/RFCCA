@@ -23,6 +23,10 @@
 #' @param nsplit Non-negative integer value for the number of random splits to
 #'   consider for each candidate splitting variable. When zero or \code{NULL},
 #'   all possible splits considered.
+#' @param Xcenter Should the columns of X be centered? The default is
+#'   \code{TRUE}.
+#' @param Ycenter Should the columns of Y be centered? The default is
+#'   \code{TRUE}.
 #'
 #' @return An object of class \code{(rfcca,globalsignificance)} which is a list
 #' with the following components:
@@ -89,7 +93,9 @@ global.significance <- function(X,
                                 nperm = 500,
                                 nodesize = NULL,
                                 nodedepth = NULL,
-                                nsplit = 10)
+                                nsplit = 10,
+                                Xcenter = TRUE,
+                                Ycenter = TRUE)
 {
   ## initial checks
   if (is.null(X)) {stop("X is missing")}
@@ -128,11 +134,14 @@ global.significance <- function(X,
     yvar <- yvar[-na.all, ]
     zvar <- zvar[-na.all, ]
   }
+  ## mean centering
+  if (Xcenter) {xvar <- as.data.frame(scale(xvar, center = TRUE, scale = FALSE))}
+  if (Ycenter) {yvar <- as.data.frame(scale(yvar, center = TRUE, scale = FALSE))}
   ## get dimension info
-  n <- as.numeric(dim(zvar)[1])
-  px <- as.numeric(dim(xvar)[2])
-  py <- as.numeric(dim(yvar)[2])
-  pz <- as.numeric(dim(zvar)[2])
+  n <- as.numeric(nrow(zvar))
+  px <- as.numeric(ncol(xvar))
+  py <- as.numeric(ncol(yvar))
+  pz <- as.numeric(ncol(zvar))
   ## coherence checks on option parameters
   ntree <- round(ntree)
   if (ntree < 1) stop("Invalid choice of 'ntree'.  Cannot be less than 1.")
@@ -162,12 +171,14 @@ global.significance <- function(X,
     nodesize = nodesize,
     nodedepth = nodedepth,
     splitrule = "custom2",
-    nsplit = nsplit
+    nsplit = nsplit,
+    Xcenter = Xcenter,
+    Ycenter = Ycenter
   )
   ## get predictions for training observations
   predicted.oob <- rfcca.out$predicted.oob
   ## Compute CCA for X and Y
-  cca <- cancor(xvar, yvar, xcenter = TRUE, ycenter = TRUE)$cor[1]
+  cca <- cancor(xvar, yvar, xcenter = Xcenter, ycenter = Ycenter)$cor[1]
   ## Compute global test statistic T
   Tstat <- mean((predicted.oob - cca) ^ 2)
   ## Permutations
@@ -186,7 +197,9 @@ global.significance <- function(X,
       nodesize = nodesize,
       nodedepth = nodedepth,
       splitrule = "custom2",
-      nsplit = nsplit
+      nsplit = nsplit,
+      Xcenter = Xcenter,
+      Ycenter = Ycenter
     )
     ## get predictions for permuted data
     predicted.perm[, perm] <- rfcca.out$predicted.oob

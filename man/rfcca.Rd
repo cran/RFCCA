@@ -22,6 +22,8 @@ rfcca(
   forest = TRUE,
   membership = FALSE,
   bop = TRUE,
+  Xcenter = TRUE,
+  Ycenter = TRUE,
   ...
 )
 }
@@ -83,6 +85,12 @@ returned?}
 
 \item{bop}{Should the Bag of Observations for Prediction (BOP) for training
 observations be returned? The default is \code{TRUE}.}
+
+\item{Xcenter}{Should the columns of X be centered? The default is
+\code{TRUE}.}
+
+\item{Ycenter}{Should the columns of Y be centered? The default is
+\code{TRUE}.}
 
 \item{...}{Optional arguments to be passed to other methods.}
 }
