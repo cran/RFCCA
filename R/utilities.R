@@ -109,7 +109,7 @@ get.ensemble <- function (ensemble) {
   }
   else if (ensemble == "all") {
     ensemble <- 2^0 + 2^1
-  }    
+  }
   else {
     stop("Invalid choice for 'ensemble' option:  ", ensemble)
   }
@@ -254,7 +254,7 @@ get.na.action <- function (na.action) {
       ## This is the high byte!
       na.action <- 2^4
       ## To recover the original functionality in which the split
-      ## statistic uses missing in-node imputed values, uncomment 
+      ## statistic uses missing in-node imputed values, uncomment
       ## the following statement:
       ## na.action <- 0
     }
@@ -495,8 +495,8 @@ get.seed <- function (seed) {
     return (statistics)
   }
   get.terminal.qualts <- function (terminal.qualts, incoming.flag) {
-    ## Convert option into native code parameter.  This 
-    ## is sensitive to incoming and outgoing data 
+    ## Convert option into native code parameter.  This
+    ## is sensitive to incoming and outgoing data
     ## (from the native code perspective).
     bits <- 0
     if (is.null(incoming.flag)) {
@@ -520,8 +520,8 @@ get.seed <- function (seed) {
     return (bits)
   }
   get.terminal.quants <- function (terminal.quants, incoming.flag) {
-    ## Convert option into native code parameter.  This 
-    ## is sensitive to incoming and outgoing data 
+    ## Convert option into native code parameter.  This
+    ## is sensitive to incoming and outgoing data
     ## (from the native code perspective).
     bits <- 0
     if (is.null(incoming.flag)) {
@@ -737,12 +737,12 @@ is.forest.missing <- function(object) {
         ## Traditional non-augmented data matrix, with default base-learners, i.e. x-vars.
         ## trial.depth is the trial sub-tree depth, we need a value of 2 for potential pairs.
         ## rule can be "multiplication", "division", "addition", and "substraction".  Note
-        ## that division by zero is a possibility and not handled, so be careful. 
-        base.learner <- get.base.learner(trial.depth = 0, rule = "none") 
+        ## that division by zero is a possibility and not handled, so be careful.
+        base.learner <- get.base.learner(trial.depth = 0, rule = "none")
     }
     else {
-        ## Check the class of the object.
-        if (class(user.option$base.learner) == "base.learner") {
+      ## Check the class of the object.
+      if (inherits(user.option$base.learner, "base.learner")) {
             base.learner <- user.option$base.learner
         }
         else {
@@ -754,11 +754,11 @@ is.forest.missing <- function(object) {
   is.hidden.lot <-  function (user.option) {
     if (is.null(user.option$lot)) {
         ## Traditional non-greedy recursive growth.  Parameter hdim must be zero.
-        lot <- get.lot(hdim = 0, treesize = 0, lag = 0, strikeout = 0) 
+        lot <- get.lot(hdim = 0, treesize = 0, lag = 0, strikeout = 0)
     }
     else {
         ## Check the class of the object.
-        if (class(user.option$lot) == "lot") {
+      if (inherits(user.option$lot, "lot")) {
             lot <- user.option$lot
         }
         else {

@@ -42,7 +42,7 @@ extern inline lapack_int LAPACKE_dgesvd_work(int matrix_layout, char jobu, char 
     /* Call LAPACK function and adjust info */
     F77_NAME(dgesvd)
     (&jobu, &jobvt, &m, &n, a, &lda, s, u, &ldu, vt, &ldvt, work, &lwork,
-     &info);
+     &info FCONE FCONE);
     if (info < 0) {
       info = info - 1;
     }
@@ -81,7 +81,7 @@ extern inline lapack_int LAPACKE_dgesvd_work(int matrix_layout, char jobu, char 
     if (lwork == -1) {
       F77_NAME(dgesvd)
       (&jobu, &jobvt, &m, &n, a, &lda_t, s, u, &ldu_t, vt, &ldvt_t, work,
-       &lwork, &info);
+       &lwork, &info FCONE FCONE);
       return (info < 0) ? (info - 1) : info;
     }
     /* Allocate memory for temporary array(s) */
@@ -109,7 +109,7 @@ extern inline lapack_int LAPACKE_dgesvd_work(int matrix_layout, char jobu, char 
     /* Call LAPACK function and adjust info */
     F77_NAME(dgesvd)
     (&jobu, &jobvt, &m, &n, a_t, &lda_t, s, u_t, &ldu_t, vt_t, &ldvt_t, work,
-     &lwork, &info);
+     &lwork, &info FCONE FCONE);
     if (info < 0) {
       info = info - 1;
     }

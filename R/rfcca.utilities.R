@@ -131,7 +131,7 @@ rccaest <- function(bop, xtrain, ytrain, lambda1, lambda2) {
 
 ## sparse cca for final canonical correlation estimation
 sccaest <- function(bop, xtrain, ytrain) {
-  scca <- PMA::CCA(xtrain[bop,], ytrain[bop,], trace = FALSE)
+  scca <- PMA::CCA(xtrain[bop,], ytrain[bop,], trace = FALSE, typex = "standard", typez = "standard")
   cor <- scca$cors
   coefx <- scca$u[,1]
   coefy <- scca$v[,1]
