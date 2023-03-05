@@ -1,5 +1,3 @@
-[![Build Status](https://api.travis-ci.com/calakus/RFCCA.svg?branch=master)](https://api.travis-ci.com/calakus/RFCCA.svg?branch=master)
-
 # RFCCA
 R package which implements **R**andom **F**orest with **C**anonical **C**orrelation **A**nalysis (**RFCCA**).
 

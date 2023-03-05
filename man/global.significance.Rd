@@ -79,7 +79,7 @@ terminal node.}
 observations based on the selected final canonical correlation estimation
 method.}
 \item{predicted.perm}{Predicted canonical correlations for the permutations.
-A matrix of predictions with observations on the ows and permutations on
+A matrix of predictions with observations on the rows and permutations on
 the columns.}
 }
 \description{

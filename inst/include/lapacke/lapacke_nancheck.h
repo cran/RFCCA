@@ -35,7 +35,7 @@ int nancheck_flag = -1;
 
 inline void LAPACKE_set_nancheck(int flag) { nancheck_flag = (flag) ? 1 : 0; }
 
-inline int LAPACKE_get_nancheck() {
+inline int LAPACKE_get_nancheck(void) {
   char* env;
   if (nancheck_flag != -1) {
     return nancheck_flag;

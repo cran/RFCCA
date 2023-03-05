@@ -158,7 +158,7 @@ lapack_logical LAPACK_lsame( char* ca,  char* cb,
 
 /* APIs for set/get nancheck flags */
 void LAPACKE_set_nancheck(int flag);
-int LAPACKE_get_nancheck();
+int LAPACKE_get_nancheck(void);
 
 /* Selected Double Precision Lapack Routines
  ========

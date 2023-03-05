@@ -1,6 +1,6 @@
 Package: RFCCA
 Title: Random Forest with Canonical Correlation Analysis
-Version: 1.0.9
+Version: 1.0.10
 Authors@R: 
     c(person(given = "Cansu", family = "Alakus", role = c("aut", "cre"), email = "cansu.alakus@hec.ca"),
       person(given = "Denis", family = "Larocque", role = c("aut"), email = "denis.larocque@hec.ca"),
@@ -20,14 +20,14 @@ Depends: R (>= 3.5.0)
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
 Imports: CCA, PMA
 Suggests: knitr, rmarkdown, testthat
 VignetteBuilder: knitr
 URL: https://github.com/calakus/RFCCA
 BugReports: https://github.com/calakus/RFCCA/issues
 NeedsCompilation: yes
-Packaged: 2022-04-08 23:34:50 UTC; cansualakus
+Packaged: 2023-03-05 23:13:52 UTC; cansualakus
 Author: Cansu Alakus [aut, cre],
   Denis Larocque [aut],
   Aurelie Labbe [aut],
@@ -35,4 +35,4 @@ Author: Cansu Alakus [aut, cre],
   Udaya B. Kogalur [ctb] (Author of included randomForestSRC codes)
 Maintainer: Cansu Alakus <cansu.alakus@hec.ca>
 Repository: CRAN
-Date/Publication: 2022-04-13 07:52:42 UTC
+Date/Publication: 2023-03-05 23:30:02 UTC

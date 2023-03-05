@@ -1,9 +1,9 @@
 citHeader("To cite RFCCA in publications use:")
 
-citEntry(
-  entry    = "Article",
+bibentry(
+  bibtype  = "Article",
   title    = "Conditional canonical correlation estimation based on covariates with random forests",
-  author   = personList(person(family="Alakus", given="Cansu"),
+  author   = c(person(family="Alakus", given="Cansu"),
 	                      person(family="Larocque", given="Denis"),
 	                      person(family="Jacquemont", given="Sebastien"),
 	                      person(family="Barlaam", given="Fanny"),

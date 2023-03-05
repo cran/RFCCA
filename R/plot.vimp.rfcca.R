@@ -6,10 +6,11 @@
 #' @param x An object of class (rfcca,grow) or (rfcca,predict).
 #' @param sort Should the z-variables be sorted according to their variable
 #'   importance measures in the plot? The default is \code{TRUE}.
-#' @param ndisp Number of z-variables to display in the plot. If \code{TRUE},
-#'   the most important \code{ndisp} z-variables will be plotted. Otherwise, the
-#'   first \code{ndisp} z-variables in the original call will be plotted. The
-#'   default value is \code{NULL} which will plot all of the z-variables.
+#' @param ndisp Number of z-variables to display in the plot. If \code{sort}=
+#'   \code{TRUE}, the most important \code{ndisp} z-variables will be plotted.
+#'   Otherwise, the first \code{ndisp} z-variables in the original call will be
+#'   plotted. The default value is \code{NULL} which will plot all of the
+#'   z-variables.
 #' @param ...  Optional arguments to be passed to other methods.
 #'
 #' @return Invisibly, the variable importance measures that were plotted.

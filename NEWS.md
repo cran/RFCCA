@@ -1,3 +1,7 @@
+## RFCCA 1.0.10
+* Fixed function declaration without a prototype.
+* Fixed sprintf calls per Prof. Ripley.
+
 ## RFCCA 1.0.9
 * Fixed the 'length > 1 in coercion to logical' errors.
 * Fixed Fortran calls for BLAS functions.

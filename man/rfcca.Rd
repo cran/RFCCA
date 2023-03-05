@@ -17,8 +17,12 @@ rfcca(
   finalcca = c("cca", "scca", "rcca"),
   bootstrap = TRUE,
   samptype = c("swor", "swr"),
-  sampsize = if (samptype == "swor") function(x) {     x * 0.632 } else function(x) {  
-      x },
+  sampsize = if (samptype == "swor") function(x) {
+     x * 0.632
+ } else function(x)
+    {
+     x
+ },
   forest = TRUE,
   membership = FALSE,
   bop = TRUE,
