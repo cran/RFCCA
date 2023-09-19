@@ -404,30 +404,30 @@ make.strat.sample <- function(y, subratio) {
 ## print function for subsampled ci
 ##
 ###################################################################
-print.subsample.rfsrc <- function(x, alpha = .05, standardize = TRUE) {
-  vmp <- x$vmp
-  nullO <- lapply(1:length(vmp), function(j) {
-    m.target <- names(vmp)[j]
-    p.vmp <- ncol(vmp[[j]])
-    vmp.col.names <- colnames(vmp[[j]])
-    if (length(vmp) > 1) {
-      cat("processing a multivariate family, outcome:", m.target, "\n")
-    }
-    lapply(1:p.vmp, function(k) {
-      oo <- extract.subsample(x, alpha = alpha, target = k - 1,
-                  m.target = m.target, standardize = standardize)
-      cat("===== VIMP confidence regions for", vmp.col.names[k], " =====\n")
-      cat("nonparametric:\n")
-      print(round(oo$ci, 3))
-      cat("parametric:\n")
-      print(round(oo$ci.Z, 3))
-      cat("parametric (jackknife):\n")
-      print(round(oo$ci.jk.Z, 3))
-      NULL
-    })
-  })
-}
-print.subsample <- print.subsample.rfsrc
+# print.subsample.rfsrc <- function(x, alpha = .05, standardize = TRUE) {
+#   vmp <- x$vmp
+#   nullO <- lapply(1:length(vmp), function(j) {
+#     m.target <- names(vmp)[j]
+#     p.vmp <- ncol(vmp[[j]])
+#     vmp.col.names <- colnames(vmp[[j]])
+#     if (length(vmp) > 1) {
+#       cat("processing a multivariate family, outcome:", m.target, "\n")
+#     }
+#     lapply(1:p.vmp, function(k) {
+#       oo <- extract.subsample(x, alpha = alpha, target = k - 1,
+#                   m.target = m.target, standardize = standardize)
+#       cat("===== VIMP confidence regions for", vmp.col.names[k], " =====\n")
+#       cat("nonparametric:\n")
+#       print(round(oo$ci, 3))
+#       cat("parametric:\n")
+#       print(round(oo$ci.Z, 3))
+#       cat("parametric (jackknife):\n")
+#       print(round(oo$ci.jk.Z, 3))
+#       NULL
+#     })
+#   })
+# }
+# print.subsample <- print.subsample.rfsrc
 ###################################################################
 ##
 ## combine two lists of vimp: o1 is master, o2 is appended
@@ -603,25 +603,25 @@ extract.bootsample <- function(obj, alpha = .05, target = 0, m.target = NULL, st
 ## print function from bootstrap ci
 ##
 ###################################################################
-print.bootsample.rfsrc <- function(x, alpha = .05, standardize = TRUE) {
-  vmp <- x$vmp
-  nullO <- lapply(1:length(vmp), function(j) {
-    m.target <- names(vmp)[j]
-    p.vmp <- ncol(vmp[[j]])
-    vmp.col.names <- colnames(vmp[[j]])
-    if (length(vmp) > 1) {
-      cat("processing a multivariate family, outcome:", m.target, "\n")
-    }
-    lapply(1:p.vmp, function(k) {
-      oo <- extract.bootsample(x, alpha = alpha, target = k - 1,
-                   m.target = m.target, standardize = standardize)
-      cat("===== VIMP confidence regions for", vmp.col.names[k], " =====\n")
-      cat("nonparametric:\n")
-      print(round(oo$ci, 3))
-      cat("parametric:\n")
-      print(round(oo$ci.Z, 3))
-      NULL
-    })
-  })
-}
-print.bootsample <- print.bootsample.rfsrc
+# print.bootsample.rfsrc <- function(x, alpha = .05, standardize = TRUE) {
+#   vmp <- x$vmp
+#   nullO <- lapply(1:length(vmp), function(j) {
+#     m.target <- names(vmp)[j]
+#     p.vmp <- ncol(vmp[[j]])
+#     vmp.col.names <- colnames(vmp[[j]])
+#     if (length(vmp) > 1) {
+#       cat("processing a multivariate family, outcome:", m.target, "\n")
+#     }
+#     lapply(1:p.vmp, function(k) {
+#       oo <- extract.bootsample(x, alpha = alpha, target = k - 1,
+#                    m.target = m.target, standardize = standardize)
+#       cat("===== VIMP confidence regions for", vmp.col.names[k], " =====\n")
+#       cat("nonparametric:\n")
+#       print(round(oo$ci, 3))
+#       cat("parametric:\n")
+#       print(round(oo$ci.Z, 3))
+#       NULL
+#     })
+#   })
+# }
+# print.bootsample <- print.bootsample.rfsrc

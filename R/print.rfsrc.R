@@ -16,7 +16,7 @@ print.rfsrc <- function(x, outcome.target = NULL, ...) {
     print.default(x)
     return()
   }
-  ## deal with synthetic forests        
+  ## deal with synthetic forests
   sf.flag <- FALSE
   if (sum(inherits(x, c("rfsrc", "synthetic"), TRUE) == c(1, 2)) == 2) {
     if (sum(inherits(x, c("rfsrc", "synthetic", "oob"), TRUE) == c(1, 2, 3)) != 3) {
@@ -27,12 +27,12 @@ print.rfsrc <- function(x, outcome.target = NULL, ...) {
   }
   ## is this a subsampled object?
   if (sum(inherits(x, c("rfsrc", "subsample"), TRUE) == c(1, 4)) == 2) {
-    print.subsample(x, ...)
+    # print.subsample(x, ...)
     return()
   }
   ## is this a subsampled-bootstrap object?
   if (sum(inherits(x, c("rfsrc", "bootsample"), TRUE) == c(1, 4)) == 2) {
-    print.bootsample(x, ...)
+    # print.bootsample(x, ...)
     return()
   }
   ## check that the object is interpretable
@@ -111,9 +111,9 @@ print.rfsrc <- function(x, outcome.target = NULL, ...) {
       conf.matx <- brierS <- aucS <- gmeanS <- NULL
     }
   }
-  ## error rates 
+  ## error rates
   if (!is.null(x$err.rate)) {
-    err.rate <- cbind(x$err.rate)    
+    err.rate <- cbind(x$err.rate)
     if (grepl("surv", x$family)) {
       err.rate <- paste(round(100 * err.rate[nrow(err.rate), ], 2), "%", collapse=", ", sep = "")
     }
@@ -123,7 +123,7 @@ print.rfsrc <- function(x, outcome.target = NULL, ...) {
       overall.err.rate <- paste(round(100 * err.rate[nrow(err.rate), 1], 2), "%", sep = "")
       ## rfq related adjustments
       if (!is.null(gmeanS)) {
-        err.rate <- round(err.rate[nrow(err.rate), 1], 2)          
+        err.rate <- round(err.rate[nrow(err.rate), 1], 2)
       }
       else {
         err.rate <- paste(round(err.rate[nrow(err.rate), ], 2), collapse=", ", sep = "")
@@ -148,7 +148,7 @@ print.rfsrc <- function(x, outcome.target = NULL, ...) {
   ##
   ## grow mode
   ##
-  ################################################################################# 
+  #################################################################################
   if (grow.mode) {
     cat("                         Sample size: ", x$n,                 "\n", sep="")
     if (grepl("surv", x$family)) {
@@ -165,14 +165,14 @@ print.rfsrc <- function(x, outcome.target = NULL, ...) {
     if (!is.null(x$imputed.indv)) {
       cat("                    Was data imputed: ", "yes",               "\n", sep="")
       #cat("                         Missingness: ",
-      #    round(100*length(x$imputed.indv)/x$n,2), "%\n", sep="")      
+      #    round(100*length(x$imputed.indv)/x$n,2), "%\n", sep="")
     }
     cat("                     Number of trees: ", x$ntree,                "\n",sep="")
     cat("           Forest terminal node size: ", x$nodesize,             "\n", sep="")
     cat("       Average no. of terminal nodes: ", mean(x$leaf.count),     "\n", sep="")
     cat("No. of variables tried at each split: ", x$mtry,                 "\n", sep="")
     cat("              Total no. of variables: ", length(x$xvar.names),   "\n", sep="")
-    if (!x$univariate) { 
+    if (!x$univariate) {
       cat("              Total no. of responses: ", yvar.dim,   "\n", sep="")
       cat("         User has requested response: ", outcome.target,         "\n", sep="")
     }
@@ -186,7 +186,7 @@ print.rfsrc <- function(x, outcome.target = NULL, ...) {
     }
       else {
         cat("                      Splitting rule: ", x$splitrule,          "\n", sep="")
-      } 
+      }
     if (!is.null(err.rate)) {
       if (x$family == "regr") {
         cat("                % variance explained: ", per.var, "\n", sep="")
@@ -213,13 +213,13 @@ print.rfsrc <- function(x, outcome.target = NULL, ...) {
       print(conf.matx)
       cat("\n\tOverall error rate:", overall.err.rate, "\n")
     }
-     
+
   }
   #################################################################################
   ##
   ## predict mode
   ##
-  ################################################################################# 
+  #################################################################################
   else {
     ## cat("\nCall:\n", deparse(x$call),                   "\n\n")
     cat("  Sample size of test (predict) data: ", x$n,  "\n", sep="")
@@ -234,12 +234,12 @@ print.rfsrc <- function(x, outcome.target = NULL, ...) {
     if (!is.null(x$imputed.data)) {
       cat("               Was test data imputed: ", "yes",               "\n", sep="")
       #cat("                         Missingness: ",
-      #    round(100*length(x$imputed.indv)/x$n,2), "%\n", sep="")      
+      #    round(100*length(x$imputed.indv)/x$n,2), "%\n", sep="")
     }
     cat("                Number of grow trees: ", x$ntree,              "\n",sep="")
     cat("  Average no. of grow terminal nodes: ", mean(x$leaf.count),   "\n", sep="")
-    cat("         Total no. of grow variables: ", length(x$xvar.names), "\n", sep="")  
-    if (!x$univariate) { 
+    cat("         Total no. of grow variables: ", length(x$xvar.names), "\n", sep="")
+    if (!x$univariate) {
       cat("         Total no. of grow responses: ", yvar.dim,   "\n", sep="")
       cat("         User has requested response: ", outcome.target,         "\n", sep="")
     }
@@ -273,13 +273,13 @@ print.rfsrc <- function(x, outcome.target = NULL, ...) {
       print(conf.matx)
       cat("\n\tOverall error rate:", overall.err.rate, "\n")
     }
-     
+
   }
   #################################################################################
   ##
   ## synthetic forest flag
   ##
-  ################################################################################# 
+  #################################################################################
   if (sf.flag) {
     message(sf.message)
   }

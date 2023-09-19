@@ -1,12 +1,14 @@
 Package: RFCCA
 Title: Random Forest with Canonical Correlation Analysis
-Version: 1.0.10
+Version: 1.0.11
 Authors@R: 
     c(person(given = "Cansu", family = "Alakus", role = c("aut", "cre"), email = "cansu.alakus@hec.ca"),
       person(given = "Denis", family = "Larocque", role = c("aut"), email = "denis.larocque@hec.ca"),
       person(given = "Aurelie", family = "Labbe", role = c("aut"), email = "aurelie.labbe@hec.ca"),
       person(given = "Hemant", family = "Ishwaran", role = c("ctb"), comment = "Author of included randomForestSRC codes"),
-      person(given = "Udaya B.", family = "Kogalur", role = c("ctb"), comment = "Author of included randomForestSRC codes"))
+      person(given = "Udaya B.", family = "Kogalur", role = c("ctb"), comment = "Author of included randomForestSRC codes"),
+      person("Intel Corporation", role = c("cph"), comment = "Copyright holder of included LAPACKE codes"),
+      person(given = "Keita", family = "Teranishi", role = c("ctb"), comment = "Author of included cblas_dgemm.c codes"))
 Description: Random Forest with Canonical Correlation Analysis (RFCCA) is a 
   random forest method for estimating the canonical correlations between two 
   sets of variables depending on the subject-related covariates. The trees are 
@@ -15,7 +17,10 @@ Description: Random Forest with Canonical Correlation Analysis (RFCCA) is a
   method is described in Alakus et al. (2021) <doi:10.1093/bioinformatics/btab158>. RFCCA uses 
   'randomForestSRC' package (Ishwaran and Kogalur, 2020) by freezing at the 
   version 2.9.3. The custom splitting rule feature is utilised to apply the 
-  proposed splitting rule.
+  proposed splitting rule. LAPACK and BLAS libraries are used for matrix 
+  decompositions. The ‘RFCCA’ package includes the header files ‘lapacke.h’ and 
+  ‘cblas.h’ from the LAPACK and BLAS libraries. The LAPACK library is licensed 
+  under modified BSD license. 
 Depends: R (>= 3.5.0)
 License: GPL (>= 3)
 Encoding: UTF-8
@@ -27,12 +32,14 @@ VignetteBuilder: knitr
 URL: https://github.com/calakus/RFCCA
 BugReports: https://github.com/calakus/RFCCA/issues
 NeedsCompilation: yes
-Packaged: 2023-03-05 23:13:52 UTC; cansualakus
+Packaged: 2023-09-18 19:31:59 UTC; cansualakus
 Author: Cansu Alakus [aut, cre],
   Denis Larocque [aut],
   Aurelie Labbe [aut],
   Hemant Ishwaran [ctb] (Author of included randomForestSRC codes),
-  Udaya B. Kogalur [ctb] (Author of included randomForestSRC codes)
+  Udaya B. Kogalur [ctb] (Author of included randomForestSRC codes),
+  Intel Corporation [cph] (Copyright holder of included LAPACKE codes),
+  Keita Teranishi [ctb] (Author of included cblas_dgemm.c codes)
 Maintainer: Cansu Alakus <cansu.alakus@hec.ca>
 Repository: CRAN
-Date/Publication: 2023-03-05 23:30:02 UTC
+Date/Publication: 2023-09-19 08:20:02 UTC

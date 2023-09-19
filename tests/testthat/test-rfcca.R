@@ -14,6 +14,7 @@ test.Z <- Z[-smp, ]
 
 ## Test for small ntree
 test_that("small ntree",{
+  skip_on_cran()
   expect_error(rfcca(X = train.X,
                      Y = train.Y,
                      Z = train.Z,
@@ -23,6 +24,7 @@ test_that("small ntree",{
 
 ## bootstrap=FALSE and bop=TRUE. We cannot get OOB predictions. We expect bop=NULL.
 test_that("bootstrap arguments",{
+  skip_on_cran()
   expect_warning(rf <- rfcca(X = train.X,
                              Y = train.Y,
                              Z = train.Z,
@@ -34,29 +36,26 @@ test_that("bootstrap arguments",{
   expect_equal(rf$predicted.oob, NULL)
 })
 
-## run rfcca
-rf <- rfcca(X = train.X,
-            Y = train.Y,
-            Z = train.Z,
-            ntree = 50,
-            bop = FALSE)
-
-## importance and membership return
-test_that("return arguments",{
+## importance and membership return, predict
+test_that("return arguments and predict",{
+  skip_on_cran()
+  ## run rfcca
+  rf <- rfcca(X = train.X,
+              Y = train.Y,
+              Z = train.Z,
+              ntree = 50,
+              bop = FALSE)
   expect_equal(rf$importance, NULL)
   expect_equal(rf$membership,NULL)
   expect_equal(rf$bop,NULL)
   expect_equal(sum(is.na(rf$predicted.oob)),0)
-})
-
-## predict
-test_that("predict rcca",{
   expect_error(predict(rf, finalcca = "rcca"),"when rcca is the final estimation method, 'lambda1' and 'lambda2' should be entered")
   expect_error(predict(rf, test.Z, finalcca = "rcca"),"when rcca is the final estimation method, 'lambda1' and 'lambda2' should be entered")
 })
 
 ## nodesize is smaller than px+py and final.cca = "cca". Hence, we expect an error.
 test_that("nodesize",{
+  skip_on_cran()
   expect_error(rfcca(X = train.X,
                      Y = train.Y,
                      Z = train.Z,

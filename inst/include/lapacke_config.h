@@ -28,7 +28,7 @@
 ******************************************************************************
 * Contents: Native C interface to LAPACK
 * Author: Intel Corporation
-* Generated May, 2011
+* Generated September, 2023
 *****************************************************************************/
 
 #ifndef _LAPACKE_CONFIG_H_
@@ -42,78 +42,87 @@ extern "C" {
 #endif /* __cplusplus */
 
 #include <stdlib.h>
+#include <stdint.h>
+#include <inttypes.h>
 
 #ifndef lapack_int
 #if defined(LAPACK_ILP64)
-#define lapack_int long
+#define lapack_int        int64_t
 #else
-#define lapack_int int
+#define lapack_int        int32_t
+#endif
+#endif
+
+/*
+ * Integer format string
+ */
+#ifndef LAPACK_IFMT
+#if defined(LAPACK_ILP64)
+#define LAPACK_IFMT       PRId64
+#else
+#define LAPACK_IFMT       PRId32
 #endif
 #endif
 
 #ifndef lapack_logical
-#define lapack_logical lapack_int
+#define lapack_logical    lapack_int
 #endif
 
 #ifndef LAPACK_COMPLEX_CUSTOM
 
 #if defined(LAPACK_COMPLEX_STRUCTURE)
 
-typedef struct {
-  float real, imag;
-} _lapack_complex_float;
-typedef struct {
-  double real, imag;
-} _lapack_complex_double;
-#define lapack_complex_float _lapack_complex_float
+typedef struct { float real, imag; } _lapack_complex_float;
+typedef struct { double real, imag; } _lapack_complex_double;
+#define lapack_complex_float  _lapack_complex_float
 #define lapack_complex_double _lapack_complex_double
-#define lapack_complex_float_real(z) ((z).real)
-#define lapack_complex_float_imag(z) ((z).imag)
-#define lapack_complex_double_real(z) ((z).real)
-#define lapack_complex_double_imag(z) ((z).imag)
+#define lapack_complex_float_real(z)  ((z).real)
+#define lapack_complex_float_imag(z)  ((z).imag)
+#define lapack_complex_double_real(z)  ((z).real)
+#define lapack_complex_double_imag(z)  ((z).imag)
 
 #elif defined(LAPACK_COMPLEX_C99)
 
 #include <complex.h>
-#define lapack_complex_float float _Complex
-#define lapack_complex_double double _Complex
-#define lapack_complex_float_real(z) (creal(z))
-#define lapack_complex_float_imag(z) (cimag(z))
-#define lapack_complex_double_real(z) (creal(z))
-#define lapack_complex_double_imag(z) (cimag(z))
+#define lapack_complex_float    float _Complex
+#define lapack_complex_double   double _Complex
+#define lapack_complex_float_real(z)       (creal(z))
+#define lapack_complex_float_imag(z)       (cimag(z))
+#define lapack_complex_double_real(z)       (creal(z))
+#define lapack_complex_double_imag(z)       (cimag(z))
 
 #elif defined(LAPACK_COMPLEX_CPP)
 
 #define lapack_complex_float std::complex<float>
 #define lapack_complex_double std::complex<double>
-#define lapack_complex_float_real(z) ((z).real())
-#define lapack_complex_float_imag(z) ((z).imag())
-#define lapack_complex_double_real(z) ((z).real())
-#define lapack_complex_double_imag(z) ((z).imag())
+#define lapack_complex_float_real(z)       ((z).real())
+#define lapack_complex_float_imag(z)       ((z).imag())
+#define lapack_complex_double_real(z)       ((z).real())
+#define lapack_complex_double_imag(z)       ((z).imag())
 
 #else
 
 #include <complex.h>
-#define lapack_complex_float float _Complex
-#define lapack_complex_double double _Complex
-#define lapack_complex_float_real(z) (creal(z))
-#define lapack_complex_float_imag(z) (cimag(z))
-#define lapack_complex_double_real(z) (creal(z))
-#define lapack_complex_double_imag(z) (cimag(z))
+#define lapack_complex_float    float _Complex
+#define lapack_complex_double   double _Complex
+#define lapack_complex_float_real(z)       (creal(z))
+#define lapack_complex_float_imag(z)       (cimag(z))
+#define lapack_complex_double_real(z)       (creal(z))
+#define lapack_complex_double_imag(z)       (cimag(z))
 
 #endif
 
-lapack_complex_float lapack_make_complex_float(float re, float im);
-lapack_complex_double lapack_make_complex_double(double re, double im);
+lapack_complex_float lapack_make_complex_float( float re, float im );
+lapack_complex_double lapack_make_complex_double( double re, double im );
 
 #endif
 
 #ifndef LAPACK_malloc
-#define LAPACK_malloc(size) malloc(size)
+#define LAPACK_malloc( size )   malloc( size )
 #endif
 
 #ifndef LAPACK_free
-#define LAPACK_free(p) free(p)
+#define LAPACK_free( p )        free( p )
 #endif
 
 #ifdef __cplusplus

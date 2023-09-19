@@ -13,12 +13,13 @@ train.Z <- Z[smp, ]
 test.Z <- Z[-smp, ]
 
 ## vimp dimension
-rf <- rfcca(X = train.X,
-            Y = train.Y,
-            Z = train.Z,
-            ntree = 50,
-            importance = FALSE)
 test_that("vimp.rfcca",{
+  skip_on_cran()
+  rf <- rfcca(X = train.X,
+              Y = train.Y,
+              Z = train.Z,
+              ntree = 50,
+              importance = FALSE)
   expect_equal(rf$importance,NULL)
   expect_equal(length(vimp(rf)$importance),dim(train.Z)[2])
 })

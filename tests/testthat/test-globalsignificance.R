@@ -13,6 +13,7 @@ samp.Z <- Z[smp, ]
 
 
 test_that("nodesize",{
+  skip_on_cran()
   sig <- global.significance(X = samp.X,
                              Y = samp.Y,
                              Z = samp.Z,

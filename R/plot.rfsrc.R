@@ -68,9 +68,9 @@ plot.rfsrc <- function (x, m.target = NULL, plots.one.page = TRUE, sorted = TRUE
   ## decide what plots to generate
   if (all(is.na(x$importance))) {
     if (x$ntree > 1 && !all(is.na(x$err.rate))) {
-      err <- cbind(x$err.rate)      
+      err <- cbind(x$err.rate)
       par(cex = cex, mfrow = c(1,1))
-      plot.err(err, plot.yvar.names)
+      # plot.err(err, plot.yvar.names)
     }
   }
     else {
@@ -100,7 +100,7 @@ plot.rfsrc <- function (x, m.target = NULL, plots.one.page = TRUE, sorted = TRUE
           par(cex = cex, mfrow = c(1,1))
         }
       if (x$ntree > 1 & !all(is.na(x$err.rate))) {
-        plot.err(err, plot.yvar.names)
+        # plot.err(err, plot.yvar.names)
       }
       ## CR/classification scenarios
       if (ncol(imp) > 1) {
@@ -127,30 +127,30 @@ plot.rfsrc <- function (x, m.target = NULL, plots.one.page = TRUE, sorted = TRUE
       cat("\n")
       if (verbose) {
         print(round(imp.out[1:min(n.pred, max.pred),, drop = FALSE],4), justify="right", print.gap=3)
-      }    
+      }
     }
 #################################################################################
   ##
   ## synthetic forest flag
   ##
-################################################################################# 
+#################################################################################
   if (sf.flag) {
     message(sf.message)
   }
 }
 ## error rate plot
-plot.err <- function(err, yname = NULL, ...) {
-  opar <- par("cex")
-  on.exit(par(opar))
-  matplot(1:nrow(err), err,
-          xlab = "Number of Trees",
-          ylab = paste("Error rate", yname),
-          type = c("p", "l")[1 + 1 * (nrow(err) > 1)], pch = 16, lty = 1, lwd = 3)
-  if (ncol(err) > 1) {
-    legend("topright",
-           legend = colnames(err), col = 1:ncol(err), lty = 1, lwd = 3)
-  }
-}
+# plot.err <- function(err, yname = NULL, ...) {
+#   opar <- par("cex")
+#   on.exit(par(opar))
+#   matplot(1:nrow(err), err,
+#           xlab = "Number of Trees",
+#           ylab = paste("Error rate", yname),
+#           type = c("p", "l")[1 + 1 * (nrow(err) > 1)], pch = 16, lty = 1, lwd = 3)
+#   if (ncol(err) > 1) {
+#     legend("topright",
+#            legend = colnames(err), col = 1:ncol(err), lty = 1, lwd = 3)
+#   }
+# }
 ## pretty dotchart
 dotChart <- function(x, yname = NULL, labels = NULL, cex = cex) {
   if (!is.null(dim(x))) {
@@ -171,34 +171,34 @@ dotChart <- function(x, yname = NULL, labels = NULL, cex = cex) {
 }
 ## workhorse for dotchart
 dot.chart.main <- function (x, labels = NULL, groups = NULL, gdata = NULL, cex = NULL,
-                            pch = 21, gpch = 21, bg = par("bg"), color = par("fg"), gcolor = par("fg"), 
-                            lcolor = "gray", xlim = range(x[is.finite(x)]), main = NULL, 
-                            xlab = NULL, ylab = NULL, ...) 
+                            pch = 21, gpch = 21, bg = par("bg"), color = par("fg"), gcolor = par("fg"),
+                            lcolor = "gray", xlim = range(x[is.finite(x)]), main = NULL,
+                            xlab = NULL, ylab = NULL, ...)
 {
   opar <- par("mai", "mar", "cex", "yaxs")
   on.exit(par(opar))
   par(yaxs = "i")
-  if (!is.numeric(x)) 
+  if (!is.numeric(x))
     stop("'x' must be a numeric vector or matrix")
   n <- length(x)
   if (is.matrix(x)) {
-    if (is.null(labels)) 
+    if (is.null(labels))
       labels <- rownames(x)
-    if (is.null(labels)) 
+    if (is.null(labels))
       labels <- as.character(1:nrow(x))
     labels <- rep(labels, length.out = n)
-    if (is.null(groups)) 
+    if (is.null(groups))
       groups <- col(x, as.factor = TRUE)
     glabels <- levels(groups)
   }
     else {
-      if (is.null(labels)) 
+      if (is.null(labels))
         labels <- names(x)
-      glabels <- if (!is.null(groups)) 
+      glabels <- if (!is.null(groups))
                    levels(groups)
     }
   plot.new()
-  linch <- if (!is.null(labels)) 
+  linch <- if (!is.null(labels))
              max(strwidth(labels, "inch"), na.rm = TRUE)
              else 0
   if (is.null(glabels)) {
@@ -235,21 +235,21 @@ dot.chart.main <- function (x, labels = NULL, groups = NULL, gdata = NULL, cex =
     linch <- max(strwidth(labels, "inch"), na.rm = TRUE)
     loffset <- (linch + 0.1)/lheight
     labs <- labels[o]
-    mtext(labs, side = 2, line = loffset, at = y, adj = 0, 
+    mtext(labs, side = 2, line = loffset, at = y, adj = 0,
           col = color, las = 2, cex = cex, ...)
   }
   abline(h = y, lty = "dotted", col = lcolor)
   points(x, y, pch = pch, col = color, bg = bg)
   if (!is.null(groups)) {
-    gpos <- rev(cumsum(rev(tapply(groups, groups, length)) + 
+    gpos <- rev(cumsum(rev(tapply(groups, groups, length)) +
                          2) - 1)
     ginch <- max(strwidth(glabels, "inch"), na.rm = TRUE)
     goffset <- (max(linch + 0.2, ginch, na.rm = TRUE) + 0.1)/lheight
-    mtext(glabels, side = 2, line = goffset, at = gpos, adj = 0, 
+    mtext(glabels, side = 2, line = goffset, at = gpos, adj = 0,
           col = gcolor, las = 2, cex = cex, ...)
     if (!is.null(gdata)) {
       abline(h = gpos, lty = "dotted")
-      points(gdata, gpos, pch = gpch, col = gcolor, bg = bg, 
+      points(gdata, gpos, pch = gpch, col = gcolor, bg = bg,
              ...)
     }
   }
