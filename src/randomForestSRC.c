@@ -27276,7 +27276,7 @@ void printR(char *format, ...) {
   va_start(aptr, format);
   vsnprintf(buffer, sizeof(char) * 1023, format, aptr);
   va_end(aptr);
-  Rprintf(buffer);
+  Rprintf("%s", buffer);
   free((char *) buffer);
 }
 void setNativeGlobalEnv(void) {

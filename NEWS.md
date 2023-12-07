@@ -1,3 +1,6 @@
+## RFCCA 1.0.12
+* Fixed warning: format string is not a string literal.
+
 ## RFCCA 1.0.11
 * Copyright information for LAPACK and BLAS libraries are added to the DESCRIPTION file.
 

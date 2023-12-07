@@ -1,6 +1,6 @@
 Package: RFCCA
 Title: Random Forest with Canonical Correlation Analysis
-Version: 1.0.11
+Version: 1.0.12
 Authors@R: 
     c(person(given = "Cansu", family = "Alakus", role = c("aut", "cre"), email = "cansu.alakus@hec.ca"),
       person(given = "Denis", family = "Larocque", role = c("aut"), email = "denis.larocque@hec.ca"),
@@ -14,10 +14,10 @@ Description: Random Forest with Canonical Correlation Analysis (RFCCA) is a
   sets of variables depending on the subject-related covariates. The trees are 
   built with a splitting rule specifically designed to partition the data to 
   maximize the canonical correlation heterogeneity between child nodes. The 
-  method is described in Alakus et al. (2021) <doi:10.1093/bioinformatics/btab158>. RFCCA uses 
-  'randomForestSRC' package (Ishwaran and Kogalur, 2020) by freezing at the 
-  version 2.9.3. The custom splitting rule feature is utilised to apply the 
-  proposed splitting rule. LAPACK and BLAS libraries are used for matrix 
+  method is described in Alakus et al. (2021) <doi:10.1093/bioinformatics/btab158>. 
+  RFCCA uses 'randomForestSRC' package (Ishwaran and Kogalur, 2020) by freezing 
+  at the version 2.9.3. The custom splitting rule feature is utilised to apply 
+  the proposed splitting rule. LAPACK and BLAS libraries are used for matrix 
   decompositions. The ‘RFCCA’ package includes the header files ‘lapacke.h’ and 
   ‘cblas.h’ from the LAPACK and BLAS libraries. The LAPACK library is licensed 
   under modified BSD license. 
@@ -32,7 +32,7 @@ VignetteBuilder: knitr
 URL: https://github.com/calakus/RFCCA
 BugReports: https://github.com/calakus/RFCCA/issues
 NeedsCompilation: yes
-Packaged: 2023-09-18 19:31:59 UTC; cansualakus
+Packaged: 2023-12-06 21:06:47 UTC; cansualakus
 Author: Cansu Alakus [aut, cre],
   Denis Larocque [aut],
   Aurelie Labbe [aut],
@@ -42,4 +42,4 @@ Author: Cansu Alakus [aut, cre],
   Keita Teranishi [ctb] (Author of included cblas_dgemm.c codes)
 Maintainer: Cansu Alakus <cansu.alakus@hec.ca>
 Repository: CRAN
-Date/Publication: 2023-09-19 08:20:02 UTC
+Date/Publication: 2023-12-07 00:40:02 UTC

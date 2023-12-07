@@ -1,11 +1,11 @@
 ### configure.ac					-*- Autoconf -*-
 
 dnl Based on OpenMP detection in R's configure script,
-dnl which in turn is based on autoconf's openmp.m4, 
-dnl with is licensed under GPL-3 with the 
+dnl which in turn is based on autoconf's openmp.m4,
+dnl with is licensed under GPL-3 with the
 dnl Autoconf Configure Script Exception, version 3.0.
 
-AC_INIT([RFCCA], [1.0.11], [cansu.alakus@hec.ca])
+AC_INIT([RFCCA], [1.0.12], [cansu.alakus@hec.ca])
 
 
 AC_PREREQ([2.62])

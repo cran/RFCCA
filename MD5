@@ -1,6 +1,6 @@
-4c656e297ba3d239faadbbd921dec669 *DESCRIPTION
+d6531a397c1e7ea095294410861b2566 *DESCRIPTION
 1abc17eb7795ce8991346e5e6944c02b *NAMESPACE
-0ba0222a425120da769637b7950970c6 *NEWS.md
+c86dcea564bb4c07b13bf11034e53249 *NEWS.md
 e233a889dfa284897457ca8992e9a2ef *R/data.R
 312f3d8f043b50f168957e62faad1d0b *R/data.utilities.R
 7b15e7e738fcb46297ff2c3f86fcef8a *R/distance.R
@@ -48,8 +48,8 @@ ba8c1700a9e99b402b8b9dd53f8d2305 *R/vimp.rfsrc.R
 02fe97b5f6e7ab7571a814c090f286cd *README.md
 f7bdd1c9ad47be893f74d9f248ec6617 *build/vignette.rds
 e66900a0e679a19b0c32de56a9a33366 *cleanup
-c13f06c548c9e251e53035136d93deb9 *configure
-f76c7fc51c2ed03ffec0a6c496040a5d *configure.ac
+f3e4895b83846d09ad5ddb190fe886bb *configure
+f9b7da9b217409eefd56c30b1217cfef *configure.ac
 fff8ce1ead6446c561f6fdaa615ee431 *data/data.rda
 16a6a2b0433e953b5ddeb160cc3abd07 *inst/CITATION
 762c68be8592564251fc2dcf29f116fe *inst/doc/RFCCA.R
@@ -89,7 +89,7 @@ e7b908c4d76bc7b8ba850b97326b3e37 *man/vimp.rfcca.Rd
 b23888d45d2c8eaffc7892bb5a3498c2 *src/Makevars.in
 36434a861e3c1aafc705fa2de6effb98 *src/Makevars.win
 cc0ee6979778cc4f5823e839f5dfd51e *src/R_init_randomForestSRC.c
-1d0042f00440e4965520b2080c652ad2 *src/randomForestSRC.c
+ac2ebc76493af7aedeef4317d93cd9e9 *src/randomForestSRC.c
 35fe92cf50925b854a1348e77a9ce2fd *src/randomForestSRC.h
 faceeb90a858f116ec4c77d50dfbc52e *src/splitCustom.c
 ba1d6c750480289b3f8b42af6b9bc373 *src/splitCustom.h
