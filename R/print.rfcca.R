@@ -7,6 +7,8 @@
 #'   \code{(rfcca,globalsignificance)}.
 #' @param ... Optional arguments to be passed to other methods.
 #'
+#' @return No return value, called for side effects.
+#'
 #' @examples
 #' \donttest{
 #' ## load generated example data

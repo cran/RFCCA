@@ -12,6 +12,9 @@
 
 \item{...}{Optional arguments to be passed to other methods.}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Print summary output of a RFCCA analysis. This is the default print method
 for the package.

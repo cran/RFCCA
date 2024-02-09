@@ -1,8 +1,18 @@
+#define USE_FC_LEN_T
+#include <R.h>
+#include <Rinternals.h>
+#include <Rdefines.h>
+
 #include <stdlib.h>
 #include <math.h>
 #include "splitCustom.h"
-#include <cblas.h>
-#include <lapacke.h>
+
+#include <R_ext/Lapack.h>
+#include <R_ext/BLAS.h>
+
+#ifndef FCONE
+# define FCONE
+#endif
 
 
 void registerCustomFunctions(void) {
@@ -30,7 +40,6 @@ void registerCustomFunctions(void) {
   // rule in the second slot if the respones contain factors and reals.
 
     registerThis (&ccaSplitAbsoluteDifference, REGR_FAM, 2);
-    registerThis (&ccaSplitWeightedSum, REGR_FAM, 3);
 //    registerThis (&getCustomSplitStatisticMultivariateClassificationTwo, CLAS_FAM, 2);
 //    registerThis (&getCustomSplitStatisticMultivariateClassificationThree, CLAS_FAM, 3);
     
@@ -627,17 +636,14 @@ double ccaSplitAbsoluteDifference(unsigned int n,
                                   unsigned int featureCount)
 {
     double ccaCor = 0.00, ccaCorRight = 0.00, ccaCorLeft = 0.00;
-    unsigned int leftSize = 0, rghtSize= 0;
-    unsigned int i, rowLeft = 0, rowRight = 0;
-    unsigned int dimX, dimY;
+    int leftSize = 0, rghtSize= 0;
+    int i, rowLeft = 0, rowRight = 0;
+    int dimX, dimY;
     
     dimX = feature[featureCount][1];
     dimY = featureCount - dimX - 1;
     
-    lapack_int nRow, p = dimX, q = dimY;
-    lapack_int lda;
-    
-    unsigned int minDim = dimY;
+    int minDim = dimY;
     if(dimX < dimY){
         minDim = dimX;
     }
@@ -678,88 +684,171 @@ double ccaSplitAbsoluteDifference(unsigned int n,
                 }
             }
             
+            char transa = 'T', transb = 'N';
+            char jobu = 'N', jobvt = 'N';
+            int ldu = 1, ldvt = 1;
+            double alpha = 1, beta = 0;
+            int info, lwork;
+            
             // CCA for left
-            unsigned int Kx = dimX, Ky = dimY;
-            double *S = alloc_dvector2(minDim);
-            double *superb = alloc_dvector2(minDim-1);
-            double *qrX = alloc_dvector2((leftSize*dimX));
-            double *qrY = alloc_dvector2((leftSize*dimY));
-            
-            nRow = leftSize;
-            lda = nRow;
-            
+            int nRow = leftSize;
+            int lda = nRow;
+            int Kx = dimX, Ky = dimY;
             if(nRow < dimX){Kx = nRow;}
             if(nRow < dimY){Ky = nRow;}
-
-            double *tauX = alloc_dvector2(Kx);
-            double *tauY = alloc_dvector2(Ky);
-            double *qMul = alloc_dvector2((Kx*Ky));
+            
+            double *qrX = alloc_dvector(leftSize * dimX);
+            double *qrY = alloc_dvector(leftSize * dimY);
+            double *tauX = alloc_dvector(Kx);
+            double *tauY = alloc_dvector(Ky);
+            double *qMul = alloc_dvector(Kx * Ky);
+            double *S = alloc_dvector(minDim);
             
             for(int row = 0; row < leftSize; row++){
                 for(int col = 0; col < dimX; col++){
-                    qrX[row+col*leftSize] = leftX[row][col];
+//                    qrX[row * dimX + col] = leftX[row][col];
+                    qrX[row + col * leftSize] = leftX[row][col];
                 }
                 for(int col = 0; col < dimY; col++){
-                    qrY[row+col*leftSize] = leftY[row][col];
+                    qrY[row + col * leftSize] = leftY[row][col];
                 }
             }
 
-            LAPACKE_dgeqrf( LAPACK_COL_MAJOR, nRow, p, qrX, lda, tauX );
-            LAPACKE_dorgqr( LAPACK_COL_MAJOR, nRow, Kx, Kx, qrX, lda, tauX );
-            LAPACKE_dgeqrf( LAPACK_COL_MAJOR, nRow, q, qrY, lda, tauY );
-            LAPACKE_dorgqr( LAPACK_COL_MAJOR, nRow, Ky, Ky, qrY, lda, tauY );
-            cblas_dgemm( CblasColMajor,  CblasTrans,  CblasNoTrans, Kx, Ky, nRow, 1, qrX, nRow, qrY, nRow, 0, qMul, Kx);
-            LAPACKE_dgesvd( LAPACK_COL_MAJOR, 'N', 'N', Kx, Ky, qMul, Kx, S, NULL, 1, NULL, 1, superb );
-
-            ccaCorLeft = S[0];
+            double *work = NULL;
+            double work_query;
             
-            dealloc_dvector2(qrX, (leftSize*dimX));
-            dealloc_dvector2(qrY, (leftSize*dimY));
-            dealloc_dvector2(qMul, (Kx*Ky));
-            dealloc_dvector2(tauX, Kx);
-            dealloc_dvector2(tauY, Ky);
+            info = 0, lwork = -1;
+            F77_CALL(dgeqrf)(&nRow, &dimX, qrX, &lda, tauX, &work_query, &lwork, &info);
+            lwork = (int)work_query;
+            work = (double*)malloc(sizeof(double) * lwork);
+//            double *work = (double *)malloc(lwork * sizeof(double));
+//            double *work = alloc_dvector(1);
+            F77_CALL(dgeqrf)(&nRow, &dimX, qrX, &lda, tauX, work, &lwork, &info);
+            free(work);
+            
+            info = 0, lwork = -1;
+            F77_CALL(dorgqr)(&nRow, &Kx, &Kx, qrX, &lda, tauX, &work_query, &lwork, &info);
+            lwork = (int)work_query;
+            work = (double*)malloc(sizeof(double) * lwork);
+            F77_CALL(dorgqr)(&nRow, &Kx, &Kx, qrX, &lda, tauX, work, &lwork, &info);
+            free(work);
+            
+            info = 0, lwork = -1;
+            F77_CALL(dgeqrf)(&nRow, &dimY, qrY, &lda, tauY, &work_query, &lwork, &info);
+            lwork = (int)work_query;
+            work = (double*)malloc(sizeof(double) * lwork);
+            F77_CALL(dgeqrf)(&nRow, &dimY, qrY, &lda, tauY, work, &lwork, &info);
+            free(work);
+            
+            info = 0, lwork = -1;
+            F77_CALL(dorgqr)(&nRow, &Ky, &Ky, qrY, &lda, tauY, &work_query, &lwork, &info);
+            lwork = (int)work_query;
+            work = (double*)malloc(sizeof(double) * lwork);
+            F77_CALL(dorgqr)(&nRow, &Ky, &Ky, qrY, &lda, tauY, work, &lwork, &info);
+            free(work);
+            
+            F77_CALL(dgemm)(&transa, &transb, &Kx, &Ky, &nRow, &alpha, qrX, &nRow, qrY, &nRow, &beta, qMul, &Kx FCONE FCONE);
+            
+            info = 0, lwork = -1;
+            F77_CALL(dgesvd)(&jobu, &jobvt, &Kx, &Ky, qMul, &Kx, S, NULL, &ldu, NULL, &ldvt, &work_query, &lwork, &info FCONE FCONE);
+            lwork = (int)work_query;
+            work = (double*)malloc(sizeof(double) * lwork);
+            F77_CALL(dgesvd)(&jobu, &jobvt, &Kx, &Ky, qMul, &Kx, S, NULL, &ldu, NULL, &ldvt, work, &lwork, &info FCONE FCONE);
+            
+            if (info == 0) {
+                ccaCorLeft = S[0];
+            } else if (info > 0) {
+                ccaCorLeft = S[0];
+                for (int i = 1; i < lwork; i++) {
+                    if (work[i] > ccaCorLeft) {
+                        ccaCorLeft = work[i];
+                    }
+                }
+            }
+            free(work);
+            
+            dealloc_dvector(qrX);
+            dealloc_dvector(qrY);
+            dealloc_dvector(qMul);
+            dealloc_dvector(tauX);
+            dealloc_dvector(tauY);
             
             // CCA for right
-            Kx = dimX;
-            Ky = dimY;
-            qrX = alloc_dvector2((rghtSize*dimX));
-            qrY = alloc_dvector2((rghtSize*dimY));;
-            qMul = alloc_dvector2((Kx*Ky));
-            
             nRow = rghtSize;
             lda = nRow;
-            
+            Kx = dimX, Ky = dimY;
             if(nRow < dimX){Kx = nRow;}
             if(nRow < dimY){Ky = nRow;}
             
-            tauX = alloc_dvector2(Kx);
-            tauY = alloc_dvector2(Ky);
+            qrX = alloc_dvector(rghtSize * dimX);
+            qrY = alloc_dvector(rghtSize * dimY);
+            tauX = alloc_dvector(Kx);
+            tauY = alloc_dvector(Ky);
+            qMul = alloc_dvector(Kx * Ky);
             
             for(int row = 0; row < rghtSize; row++){
                 for(int col = 0; col < dimX; col++){
-                    qrX[row+col*rghtSize] = rightX[row][col];
+                    qrX[row + col * rghtSize] = rightX[row][col];
                 }
                 for(int col = 0; col < dimY; col++){
-                    qrY[row+col*rghtSize] = rightY[row][col];
+                    qrY[row + col * rghtSize] = rightY[row][col];
                 }
             }
+            
+            info = 0, lwork = -1;
+            F77_CALL(dgeqrf)(&nRow, &dimX, qrX, &lda, tauX, &work_query, &lwork, &info);
+            lwork = (int)work_query;
+            work = (double*)malloc(sizeof(double) * lwork);
+            F77_CALL(dgeqrf)(&nRow, &dimX, qrX, &lda, tauX, work, &lwork, &info);
+            free(work);
+            
+            info = 0, lwork = -1;
+            F77_CALL(dorgqr)(&nRow, &Kx, &Kx, qrX, &lda, tauX, &work_query, &lwork, &info);
+            lwork = (int)work_query;
+            work = (double*)malloc(sizeof(double) * lwork);
+            F77_CALL(dorgqr)(&nRow, &Kx, &Kx, qrX, &lda, tauX, work, &lwork, &info);
+            free(work);
+            
+            info = 0, lwork = -1;
+            F77_CALL(dgeqrf)(&nRow, &dimY, qrY, &lda, tauY, &work_query, &lwork, &info);
+            lwork = (int)work_query;
+            work = (double*)malloc(sizeof(double) * lwork);
+            F77_CALL(dgeqrf)(&nRow, &dimY, qrY, &lda, tauY, work, &lwork, &info);
+            free(work);
+            
+            info = 0, lwork = -1;
+            F77_CALL(dorgqr)(&nRow, &Ky, &Ky, qrY, &lda, tauY, &work_query, &lwork, &info);
+            lwork = (int)work_query;
+            work = (double*)malloc(sizeof(double) * lwork);
+            F77_CALL(dorgqr)(&nRow, &Ky, &Ky, qrY, &lda, tauY, work, &lwork, &info);
+            free(work);
+            
+            F77_CALL(dgemm)(&transa, &transb, &Kx, &Ky, &nRow, &alpha, qrX, &nRow, qrY, &nRow, &beta, qMul, &Kx FCONE FCONE);
+            
+            info = 0, lwork = -1;
+            F77_CALL(dgesvd)(&jobu, &jobvt, &Kx, &Ky, qMul, &Kx, S, NULL, &ldu, NULL, &ldvt, &work_query, &lwork, &info FCONE FCONE);
+            lwork = (int)work_query;
+            work = (double*)malloc(sizeof(double) * lwork);
+            F77_CALL(dgesvd)(&jobu, &jobvt, &Kx, &Ky, qMul, &Kx, S, NULL, &ldu, NULL, &ldvt, work, &lwork, &info FCONE FCONE);
+            
+            if (info == 0) {
+                ccaCorRight = S[0];
+            } else if (info > 0) {
+                ccaCorRight = S[0];
+                for (int i = 1; i < lwork; i++) {
+                    if (work[i] > ccaCorRight) {
+                        ccaCorRight = work[i];
+                    }
+                }
+            }
+            free(work);
          
-            LAPACKE_dgeqrf( LAPACK_COL_MAJOR, nRow, p, qrX, lda, tauX );
-            LAPACKE_dorgqr( LAPACK_COL_MAJOR, nRow, Kx, Kx, qrX, lda, tauX );
-            LAPACKE_dgeqrf( LAPACK_COL_MAJOR, nRow, q, qrY, lda, tauY );
-            LAPACKE_dorgqr( LAPACK_COL_MAJOR, nRow, Ky, Ky, qrY, lda, tauY );
-            cblas_dgemm( CblasColMajor,  CblasTrans,  CblasNoTrans, Kx, Ky, nRow, 1, qrX, nRow, qrY, nRow, 0, qMul, Kx);
-            LAPACKE_dgesvd( LAPACK_COL_MAJOR, 'N', 'N', Kx, Ky, qMul, Kx, S, NULL, 1, NULL, 1, superb );
-
-            ccaCorRight = S[0];
-         
-            dealloc_dvector2(qrX, (rghtSize*dimX));
-            dealloc_dvector2(qrY, (rghtSize*dimY));
-            dealloc_dvector2(qMul, (Kx*Ky));
-            dealloc_dvector2(tauX, Kx);
-            dealloc_dvector2(tauY, Ky);
-            dealloc_dvector2(S, minDim);
-            dealloc_dvector2(superb, minDim-1);
+            dealloc_dvector(qrX);
+            dealloc_dvector(qrY);
+            dealloc_dvector(qMul);
+            dealloc_dvector(tauX);
+            dealloc_dvector(tauY);
+            dealloc_dvector(S);
             
             ccaCor = sqrt(leftSize * rghtSize) * fabs(ccaCorLeft - ccaCorRight);
          }
@@ -768,174 +857,8 @@ double ccaSplitAbsoluteDifference(unsigned int n,
     return ccaCor;
 }
 
-double ccaSplitWeightedSum(unsigned int n,
-                           char        *membership,
-                           double      *time,
-                           double      *event,
-
-                           unsigned int eventTypeSize,
-                           unsigned int eventTimeSize,
-                           double      *eventTime,
-
-                           double      *response,
-                           double       mean,
-                           double       variance,
-                           unsigned int maxLevel,
-
-                           double     **feature,
-                           unsigned int featureCount)
-{
-    double ccaCor = 0.00, ccaCorRight = 0.00, ccaCorLeft = 0.00;
-    unsigned int leftSize = 0, rghtSize= 0;
-    unsigned int i, rowLeft = 0, rowRight = 0;
-    unsigned int dimX, dimY;
-    
-    dimX = feature[featureCount][1];
-    dimY = featureCount - dimX - 1;
-    
-    lapack_int nRow, p = dimX, q = dimY;
-    lapack_int lda;
-    
-    unsigned int minDim = dimY;
-    if(dimX < dimY){
-        minDim = dimX;
-    }
-    
-    if(dimX > 0 && dimY > 0){
-        // Initialization of local variables:
-        leftSize = rghtSize = 0;
-        for (i = 1; i <= n; i++) {
-          // Membership will be either LEFT or RIGHT.
-          if (membership[i] == LEFT) {leftSize ++;}
-          else {rghtSize ++;}
-        }
-        
-        if( (leftSize > (dimX+dimY)) && (rghtSize > (dimX+dimY)) ){
-            // Initializion of left and right X and Y datasets
-            double leftX[leftSize][dimX], leftY[leftSize][dimY];
-            double rightX[rghtSize][dimX], rightY[rghtSize][dimY];
-            
-            // Assignment of left and right X and Y
-            for (i = 1; i <= n; i++) {
-                if(membership[i] == LEFT) {
-                    for(int col = 1; col <= dimX; col++){
-                        leftX[rowLeft][col-1] = feature[col][i];
-                    }
-                    for(int col = (dimX+1); col <= (dimX+dimY); col++){
-                        leftY[rowLeft][col-dimX-1] = feature[col][i];
-                    }
-                    rowLeft++;
-                }
-                else{
-                    for(int col = 1; col <= dimX; col++){
-                        rightX[rowRight][col-1] = feature[col][i];
-                    }
-                    for(int col = (dimX+1); col <= (dimX+dimY); col++){
-                        rightY[rowRight][col-dimX-1] = feature[col][i];
-                    }
-                    rowRight++;
-                }
-            }
-            
-            // CCA for left
-            unsigned int Kx = dimX, Ky = dimY;
-            double *S = alloc_dvector2(minDim);
-            double *superb = alloc_dvector2(minDim-1);
-            double *qrX = alloc_dvector2((leftSize*dimX));
-            double *qrY = alloc_dvector2((leftSize*dimY));
-            
-            nRow = leftSize;
-            lda = nRow;
-            
-            if(nRow < dimX){Kx = nRow;}
-            if(nRow < dimY){Ky = nRow;}
-
-            double *tauX = alloc_dvector2(Kx);
-            double *tauY = alloc_dvector2(Ky);
-            double *qMul = alloc_dvector2((Kx*Ky));
-            
-            for(int row = 0; row < leftSize; row++){
-                for(int col = 0; col < dimX; col++){
-                    qrX[row+col*leftSize] = leftX[row][col];
-                }
-                for(int col = 0; col < dimY; col++){
-                    qrY[row+col*leftSize] = leftY[row][col];
-                }
-            }
-
-            LAPACKE_dgeqrf( LAPACK_COL_MAJOR, nRow, p, qrX, lda, tauX );
-            LAPACKE_dorgqr( LAPACK_COL_MAJOR, nRow, Kx, Kx, qrX, lda, tauX );
-            LAPACKE_dgeqrf( LAPACK_COL_MAJOR, nRow, q, qrY, lda, tauY );
-            LAPACKE_dorgqr( LAPACK_COL_MAJOR, nRow, Ky, Ky, qrY, lda, tauY );
-            cblas_dgemm( CblasColMajor,  CblasTrans,  CblasNoTrans, Kx, Ky, nRow, 1, qrX, nRow, qrY, nRow, 0, qMul, Kx);
-            LAPACKE_dgesvd( LAPACK_COL_MAJOR, 'N', 'N', Kx, Ky, qMul, Kx, S, NULL, 1, NULL, 1, superb );
-            
-            ccaCorLeft = S[0];
-            ccaCorLeft = pow(ccaCorLeft,2);
-            
-            dealloc_dvector2(qrX, (leftSize*dimX));
-            dealloc_dvector2(qrY, (leftSize*dimY));
-            dealloc_dvector2(qMul, (Kx*Ky));
-            dealloc_dvector2(tauX, Kx);
-            dealloc_dvector2(tauY, Ky);
-            
-            // CCA for right
-            Kx = dimX;
-            Ky = dimY;
-            qrX = alloc_dvector2((rghtSize*dimX));
-            qrY = alloc_dvector2((rghtSize*dimY));;
-            qMul = alloc_dvector2((Kx*Ky));
-            
-            nRow = rghtSize;
-            lda = nRow;
-            
-            if(nRow < dimX){Kx = nRow;}
-            if(nRow < dimY){Ky = nRow;}
-            
-            tauX = alloc_dvector2(Kx);
-            tauY = alloc_dvector2(Ky);
-            
-            for(int row = 0; row < rghtSize; row++){
-                for(int col = 0; col < dimX; col++){
-                    qrX[row+col*rghtSize] = rightX[row][col];
-                }
-                for(int col = 0; col < dimY; col++){
-                    qrY[row+col*rghtSize] = rightY[row][col];
-                }
-            }
-         
-            LAPACKE_dgeqrf( LAPACK_COL_MAJOR, nRow, p, qrX, lda, tauX );
-            LAPACKE_dorgqr( LAPACK_COL_MAJOR, nRow, Kx, Kx, qrX, lda, tauX );
-            LAPACKE_dgeqrf( LAPACK_COL_MAJOR, nRow, q, qrY, lda, tauY );
-            LAPACKE_dorgqr( LAPACK_COL_MAJOR, nRow, Ky, Ky, qrY, lda, tauY );
-            cblas_dgemm( CblasColMajor,  CblasTrans,  CblasNoTrans, Kx, Ky, nRow, 1, qrX, nRow, qrY, nRow, 0, qMul, Kx);
-            LAPACKE_dgesvd( LAPACK_COL_MAJOR, 'N', 'N', Kx, Ky, qMul, Kx, S, NULL, 1, NULL, 1, superb );
-            
-            ccaCorRight = S[0];
-            ccaCorRight = pow(ccaCorRight,2);
-            
-            dealloc_dvector2(qrX, (rghtSize*dimX));
-            dealloc_dvector2(qrY, (rghtSize*dimY));
-            dealloc_dvector2(qMul, (Kx*Ky));
-            dealloc_dvector2(tauX, Kx);
-            dealloc_dvector2(tauY, Ky);
-            dealloc_dvector2(S, minDim);
-            dealloc_dvector2(superb, minDim-1);
-            
-            ccaCor = leftSize * ccaCorLeft + rghtSize * ccaCorRight;
-        }
-    }
-
-    return ccaCor;
-}
-
 /*
   Memory allocation and deallocation.
-    [nh] = the length of the array
-    
-  Note that indexing is one-based:  
-    array[1] ... array[nh]
-
   Multi-dimensional array allocationis 
   accomplished via multiple one-dimensional
   array allocations.
@@ -947,16 +870,6 @@ unsigned int *alloc_uivector(unsigned int nh)
 }
 
 void dealloc_uivector(unsigned int *v, unsigned int nh)
-{
-  free((char *) v);
-}
-
-double *alloc_dvector(double *v, unsigned int nh)
-{
-  return (double *) malloc((size_t) ((nh+1) * (sizeof(double))));
-}
-
-void dealloc_dvector(double *v, unsigned int nh)
 {
   free((char *) v);
 }
@@ -979,12 +892,12 @@ void dealloc_uimatrix(unsigned int **v, unsigned int n2h, unsigned int nh)
   free((char *) v);
 }
 
-double *alloc_dvector2(unsigned int ncols)
+double *alloc_dvector(unsigned int nh)
 {
-  return (double *) malloc((size_t) ((ncols+1) * (sizeof(double))));
+  return (double *) malloc((size_t) (nh * (sizeof(double))));
 }
 
-void dealloc_dvector2(double *v, unsigned int ncols)
+void dealloc_dvector(double *v)
 {
   free((char *) v);
 }

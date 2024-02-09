@@ -185,21 +185,9 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] RFCCA_1.0.11   testthat_3.1.4
+#> [1] RFCCA_2.0.0
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] viridis_0.6.2      pkgload_1.2.4      maps_3.4.0         viridisLite_0.4.0  splines_4.2.0      dotCall64_1.0-1   
-#>  [7] rainbow_3.6        brio_1.1.3         hdrcde_3.4         highr_0.9          remotes_2.4.2      sessioninfo_1.2.2 
-#> [13] pillar_1.8.1       lattice_0.20-45    glue_1.6.2         colorspace_2.1-0   Matrix_1.4-1       pcaPP_2.0-1       
-#> [19] pkgconfig_2.0.3    devtools_2.4.3     fda_6.0.5          purrr_1.0.1        mvtnorm_1.1-3      scales_1.2.0      
-#> [25] processx_3.5.3     pracma_2.3.8       tibble_3.1.8       generics_0.1.3     ggplot2_3.3.6      usethis_2.1.5     
-#> [31] ellipsis_0.3.2     cachem_1.0.6       withr_2.5.0        cli_3.6.0          magrittr_2.0.3     crayon_1.5.1      
-#> [37] mclust_5.4.10      memoise_2.0.1      fds_1.8            evaluate_0.15      ps_1.7.0           ks_1.13.5         
-#> [43] fs_1.5.2           fansi_1.0.3        MASS_7.3-57        pkgbuild_1.3.1     tools_4.2.0        prettyunits_1.1.1 
-#> [49] lifecycle_1.0.3    stringr_1.4.0      munsell_0.5.0      cluster_2.1.3      callr_3.7.0        compiler_4.2.0    
-#> [55] rlang_1.0.6        grid_4.2.0         RCurl_1.98-1.6     rstudioapi_0.13    CCA_1.2.1          spam_2.8-0        
-#> [61] bitops_1.0-7       gtable_0.3.0       deSolve_1.32       PMA_1.2.1          R6_2.5.1           gridExtra_2.3     
-#> [67] knitr_1.39         dplyr_1.1.0        fastmap_1.1.0      utf8_1.2.2         rprojroot_2.0.3    KernSmooth_2.23-20
-#> [73] desc_1.4.1         stringi_1.7.8      parallel_4.2.0     fields_14.0        vctrs_0.5.2        tidyselect_1.2.0  
-#> [79] xfun_0.31
+#>  [1] compiler_4.2.0  magrittr_2.0.3  parallel_4.2.0  tools_4.2.0     rstudioapi_0.13 stringi_1.7.8   highr_0.9       knitr_1.39     
+#>  [9] stringr_1.4.0   xfun_0.31       PMA_1.2.1       evaluate_0.15
 ```
